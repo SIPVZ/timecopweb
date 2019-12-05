@@ -1,10 +1,4 @@
 // https://eslint.org/docs/user-guide/configuring
-{
-"rules": {
-"semi": ["error", "always"],
-"quotes": ["error", "double"]
-}
-}
 module.exports = {
   root: true,
   parser: 'babel-eslint',
