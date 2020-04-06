@@ -1,0 +1,879 @@
+{
+  "current": 4,
+  "result": "Task completed",
+  "state": "SUCCESS",
+  "status": {
+    "Holtwinters": {
+      "debug": [
+        {
+          "expected value": 46174.73811293575,
+          "step": 88.0
+        },
+        {
+          "expected value": 38892.07911892298,
+          "step": 89.0
+        },
+        {
+          "expected value": 39782.38793623893,
+          "step": 90.0
+        },
+        {
+          "expected value": 41812.16706286067,
+          "step": 91.0
+        },
+        {
+          "expected value": 40718.27649762709,
+          "step": 92.0
+        },
+        {
+          "expected value": 41748.52783989054,
+          "step": 93.0
+        },
+        {
+          "expected value": 39257.92656852386,
+          "step": 94.0
+        },
+        {
+          "expected value": 39034.62807766675,
+          "step": 95.0
+        },
+        {
+          "expected value": 39773.34256819633,
+          "step": 96.0
+        },
+        {
+          "expected value": 40726.06974407338,
+          "step": 97.0
+        },
+        {
+          "expected value": 41936.92420017933,
+          "step": 98.0
+        },
+        {
+          "expected value": 38439.30500068299,
+          "step": 99.0
+        },
+        {
+          "expected value": 46926.62866584382,
+          "step": 100.0
+        },
+        {
+          "expected value": 40064.871636544165,
+          "step": 101.0
+        },
+        {
+          "expected value": 43116.87250959416,
+          "step": 102.0
+        },
+        {
+          "expected value": 38787.02753215052,
+          "step": 103.0
+        },
+        {
+          "expected value": 37480.4493476981,
+          "step": 104.0
+        },
+        {
+          "expected value": 45324.98890098152,
+          "step": 105.0
+        },
+        {
+          "expected value": 36718.98597003975,
+          "step": 106.0
+        },
+        {
+          "expected value": 39090.11739487697,
+          "step": 107.0
+        },
+        {
+          "expected value": 39909.265190896665,
+          "step": 108.0
+        },
+        {
+          "expected value": 42726.41002175148,
+          "step": 109.0
+        },
+        {
+          "expected value": 42249.22224998916,
+          "step": 110.0
+        },
+        {
+          "expected value": 36207.63872018602,
+          "step": 111.0
+        },
+        {
+          "expected value": 44721.1497610676,
+          "step": 112.0
+        },
+        {
+          "expected value": 39533.18388378861,
+          "step": 113.0
+        },
+        {
+          "expected value": 41543.7973915246,
+          "step": 114.0
+        },
+        {
+          "expected value": 36033.991608905904,
+          "step": 115.0
+        },
+        {
+          "expected value": 40149.258074302226,
+          "step": 116.0
+        },
+        {
+          "expected value": 46174.73811293575,
+          "step": 117.0
+        },
+        {
+          "expected value": 38892.07911892298,
+          "step": 118.0
+        },
+        {
+          "expected value": 39782.38793623893,
+          "step": 119.0
+        },
+        {
+          "expected value": 41812.16706286067,
+          "step": 120.0
+        },
+        {
+          "expected value": 40718.27649762709,
+          "step": 121.0
+        },
+        {
+          "expected value": 41748.52783989054,
+          "step": 122.0
+        },
+        {
+          "expected value": 39257.92656852386,
+          "step": 123.0
+        },
+        {
+          "expected value": 39034.62807766675,
+          "step": 124.0
+        },
+        {
+          "expected value": 39773.34256819633,
+          "step": 125.0
+        },
+        {
+          "expected value": 40726.06974407338,
+          "step": 126.0
+        }
+      ],
+      "engine": "Holtwinters",
+      "future": [
+        {
+          "step": 127.0,
+          "value": 50944.40625
+        },
+        {
+          "step": 128.0,
+          "value": 48079.39453125
+        },
+        {
+          "step": 129.0,
+          "value": 51410.10546875
+        },
+        {
+          "step": 130.0,
+          "value": 46719.82421875
+        },
+        {
+          "step": 131.0,
+          "value": 51448.9609375
+        }
+      ],
+      "mae": 8675.898458204705,
+      "mse": 138839516.85985613,
+      "past": [
+        {
+          "anomaly_score": 0.0,
+          "expected value": 39034.62807766675,
+          "mae": 8675.898458204705,
+          "mse": 138839516.85985613,
+          "real_value": 61656.0,
+          "rmse": 11783.01815579761,
+          "step": 95.0
+        },
+        {
+          "anomaly_score": 0.4991466526837164,
+          "expected value": 39090.11739487697,
+          "mae": 8675.898458204705,
+          "mse": 138839516.85985613,
+          "real_value": 69672.0,
+          "rmse": 11783.01815579761,
+          "step": 107.0
+        },
+        {
+          "anomaly_score": 1.0,
+          "expected value": 39782.38793623893,
+          "mae": 8675.898458204705,
+          "mse": 138839516.85985613,
+          "real_value": 78352.0,
+          "rmse": 11783.01815579761,
+          "step": 119.0
+        }
+      ],
+      "present_alerts": [],
+      "present_status": "FALSE",
+      "rmse": 11783.01815579761
+    },
+    "LSTM": {
+      "debug": [
+        {
+          "expected value": 33763.21875,
+          "step": 88.0
+        },
+        {
+          "expected value": 33505.01171875,
+          "step": 89.0
+        },
+        {
+          "expected value": 31109.087890625,
+          "step": 90.0
+        },
+        {
+          "expected value": 31655.486328125,
+          "step": 91.0
+        },
+        {
+          "expected value": 31076.087890625,
+          "step": 92.0
+        },
+        {
+          "expected value": 31038.80078125,
+          "step": 93.0
+        },
+        {
+          "expected value": 30778.07421875,
+          "step": 94.0
+        },
+        {
+          "expected value": 35237.171875,
+          "step": 95.0
+        },
+        {
+          "expected value": 30972.556640625,
+          "step": 96.0
+        },
+        {
+          "expected value": 31009.046875,
+          "step": 97.0
+        },
+        {
+          "expected value": 31000.34375,
+          "step": 98.0
+        },
+        {
+          "expected value": 30830.31640625,
+          "step": 99.0
+        },
+        {
+          "expected value": 33321.05078125,
+          "step": 100.0
+        },
+        {
+          "expected value": 33230.453125,
+          "step": 101.0
+        },
+        {
+          "expected value": 31008.650390625,
+          "step": 102.0
+        },
+        {
+          "expected value": 31043.48828125,
+          "step": 103.0
+        },
+        {
+          "expected value": 31486.0234375,
+          "step": 104.0
+        },
+        {
+          "expected value": 30908.232421875,
+          "step": 105.0
+        },
+        {
+          "expected value": 30808.400390625,
+          "step": 106.0
+        },
+        {
+          "expected value": 36210.36328125,
+          "step": 107.0
+        },
+        {
+          "expected value": 30990.751953125,
+          "step": 108.0
+        },
+        {
+          "expected value": 31500.671875,
+          "step": 109.0
+        },
+        {
+          "expected value": 32075.0078125,
+          "step": 110.0
+        },
+        {
+          "expected value": 30932.048828125,
+          "step": 111.0
+        },
+        {
+          "expected value": 33085.4609375,
+          "step": 112.0
+        },
+        {
+          "expected value": 32560.96875,
+          "step": 113.0
+        },
+        {
+          "expected value": 30772.2265625,
+          "step": 114.0
+        },
+        {
+          "expected value": 30871.78515625,
+          "step": 115.0
+        },
+        {
+          "expected value": 32043.859375,
+          "step": 116.0
+        },
+        {
+          "expected value": 31124.22265625,
+          "step": 117.0
+        },
+        {
+          "expected value": 31323.513671875,
+          "step": 118.0
+        },
+        {
+          "expected value": 34410.84765625,
+          "step": 119.0
+        },
+        {
+          "expected value": 32444.54296875,
+          "step": 120.0
+        },
+        {
+          "expected value": 32083.25,
+          "step": 121.0
+        },
+        {
+          "expected value": 34161.54296875,
+          "step": 122.0
+        },
+        {
+          "expected value": 33507.59765625,
+          "step": 123.0
+        },
+        {
+          "expected value": 31217.2109375,
+          "step": 124.0
+        },
+        {
+          "expected value": 30792.607421875,
+          "step": 125.0
+        },
+        {
+          "expected value": 31562.94921875,
+          "step": 126.0
+        }
+      ],
+      "engine": "LSTM",
+      "future": [
+        {
+          "step": 127.0,
+          "value": 36787.47265625
+        },
+        {
+          "step": 128.0,
+          "value": 33741.01953125
+        },
+        {
+          "step": 129.0,
+          "value": 39707.74609375
+        },
+        {
+          "step": 130.0,
+          "value": 36269.48828125
+        },
+        {
+          "step": 131.0,
+          "value": 25512.697265625
+        }
+      ],
+      "mae": 14030,
+      "mse": 274038516,
+      "past": [
+        {
+          "anomaly_score": 0.0,
+          "expected_value": 36210.36328125,
+          "mae": 14030.57787459936,
+          "mse": 274038516.94357955,
+          "real_value": 69672.0,
+          "rmse": 16554.108763191678
+        },
+        {
+          "anomaly_score": 1.0,
+          "expected_value": 34410.84765625,
+          "mae": 14030.57787459936,
+          "mse": 274038516.94357955,
+          "real_value": 78352.0,
+          "rmse": 16554.108763191678
+        }
+      ],
+      "present_alerts": [
+        {
+          "anomaly_score": 0.0,
+          "expected_value": 34410.84765625,
+          "mae": 14030.57787459936,
+          "mse": 274038516.94357955,
+          "real_value": 78352.0,
+          "rmse": 16554.108763191678
+        }
+      ],
+      "present_status": "TRUE",
+      "rmse": 16554
+    },
+    "VAR": {
+      "debug": [
+        {
+          "expected value": 33343.53129020739,
+          "step": 88.0
+        },
+        {
+          "expected value": 31355.958925168823,
+          "step": 89.0
+        },
+        {
+          "expected value": 39339.41829080203,
+          "step": 90.0
+        },
+        {
+          "expected value": 33366.83203106852,
+          "step": 91.0
+        },
+        {
+          "expected value": 48959.233791776576,
+          "step": 92.0
+        },
+        {
+          "expected value": 40108.41910426426,
+          "step": 93.0
+        },
+        {
+          "expected value": 36025.21293179036,
+          "step": 94.0
+        },
+        {
+          "expected value": 62506.445847897136,
+          "step": 95.0
+        },
+        {
+          "expected value": 46986.598346566505,
+          "step": 96.0
+        },
+        {
+          "expected value": 40237.37628674641,
+          "step": 97.0
+        },
+        {
+          "expected value": 48610.30156970243,
+          "step": 98.0
+        },
+        {
+          "expected value": 50968.567646596,
+          "step": 99.0
+        },
+        {
+          "expected value": 30687.587634884134,
+          "step": 100.0
+        },
+        {
+          "expected value": 40500.561850258324,
+          "step": 101.0
+        },
+        {
+          "expected value": 35257.040247574994,
+          "step": 102.0
+        },
+        {
+          "expected value": 33669.90604476062,
+          "step": 103.0
+        },
+        {
+          "expected value": 52623.344099624825,
+          "step": 104.0
+        },
+        {
+          "expected value": 36779.36688584921,
+          "step": 105.0
+        },
+        {
+          "expected value": 37146.54660998819,
+          "step": 106.0
+        },
+        {
+          "expected value": 66656.55715060953,
+          "step": 107.0
+        },
+        {
+          "expected value": 43506.22709549302,
+          "step": 108.0
+        },
+        {
+          "expected value": 41580.69954329154,
+          "step": 109.0
+        },
+        {
+          "expected value": 53324.832879532616,
+          "step": 110.0
+        },
+        {
+          "expected value": 45160.322051711526,
+          "step": 111.0
+        },
+        {
+          "expected value": 40330.336851997854,
+          "step": 112.0
+        },
+        {
+          "expected value": 44038.74765232857,
+          "step": 113.0
+        },
+        {
+          "expected value": 35951.89131129308,
+          "step": 114.0
+        },
+        {
+          "expected value": 44347.43130714535,
+          "step": 115.0
+        },
+        {
+          "expected value": 55314.51035621145,
+          "step": 116.0
+        },
+        {
+          "expected value": 40521.31339719969,
+          "step": 117.0
+        },
+        {
+          "expected value": 47803.20617675173,
+          "step": 118.0
+        },
+        {
+          "expected value": 68831.4230489882,
+          "step": 119.0
+        },
+        {
+          "expected value": 50730.52606931046,
+          "step": 120.0
+        },
+        {
+          "expected value": 57552.272670167375,
+          "step": 121.0
+        },
+        {
+          "expected value": 51410.72893284705,
+          "step": 122.0
+        },
+        {
+          "expected value": 59002.99553609695,
+          "step": 123.0
+        },
+        {
+          "expected value": 52225.66808725335,
+          "step": 124.0
+        },
+        {
+          "expected value": 40911.6283816955,
+          "step": 125.0
+        },
+        {
+          "expected value": 49654.39319474093,
+          "step": 126.0
+        }
+      ],
+      "engine": "VAR",
+      "future": [
+        {
+          "step": 127.0,
+          "valores": 46882.50437595567
+        },
+        {
+          "step": 128.0,
+          "valores": 56757.05589391728
+        },
+        {
+          "step": 129.0,
+          "valores": 49871.180131272384
+        },
+        {
+          "step": 130.0,
+          "valores": 54495.5188065996
+        },
+        {
+          "step": 131.0,
+          "valores": 80745.43328176874
+        }
+      ],
+      "mae": 4333.758459632441,
+      "mse": 28367715.957128517,
+      "past": [
+        {
+          "anomaly_score": 0.0,
+          "expected value": 44038.74765232857,
+          "mae": 4333.758459632441,
+          "mse": 28367715.957128517,
+          "real_value": 34671.0
+        },
+        {
+          "anomaly_score": 0.04324638924319092,
+          "expected value": 68831.4230489882,
+          "mae": 4333.758459632441,
+          "mse": 28367715.957128517,
+          "real_value": 78352.0
+        },
+        {
+          "anomaly_score": 1.0,
+          "expected value": 52225.66808725335,
+          "mae": 4333.758459632441,
+          "mse": 28367715.957128517,
+          "real_value": 39324.0
+        }
+      ],
+      "present_alerts": [
+        {
+          "anomaly_score": 0.0,
+          "expected value": 52225.66808725335,
+          "mae": 4333.758459632441,
+          "mse": 28367715.957128517,
+          "real_value": 39324.0
+        }
+      ],
+      "present_status": "TRUE",
+      "rmse": 5326.135180140335
+    },
+    "debug": [
+      {
+        "expected value": 33343.53129020739,
+        "step": 88.0
+      },
+      {
+        "expected value": 31355.958925168823,
+        "step": 89.0
+      },
+      {
+        "expected value": 39339.41829080203,
+        "step": 90.0
+      },
+      {
+        "expected value": 33366.83203106852,
+        "step": 91.0
+      },
+      {
+        "expected value": 48959.233791776576,
+        "step": 92.0
+      },
+      {
+        "expected value": 40108.41910426426,
+        "step": 93.0
+      },
+      {
+        "expected value": 36025.21293179036,
+        "step": 94.0
+      },
+      {
+        "expected value": 62506.445847897136,
+        "step": 95.0
+      },
+      {
+        "expected value": 46986.598346566505,
+        "step": 96.0
+      },
+      {
+        "expected value": 40237.37628674641,
+        "step": 97.0
+      },
+      {
+        "expected value": 48610.30156970243,
+        "step": 98.0
+      },
+      {
+        "expected value": 50968.567646596,
+        "step": 99.0
+      },
+      {
+        "expected value": 30687.587634884134,
+        "step": 100.0
+      },
+      {
+        "expected value": 40500.561850258324,
+        "step": 101.0
+      },
+      {
+        "expected value": 35257.040247574994,
+        "step": 102.0
+      },
+      {
+        "expected value": 33669.90604476062,
+        "step": 103.0
+      },
+      {
+        "expected value": 52623.344099624825,
+        "step": 104.0
+      },
+      {
+        "expected value": 36779.36688584921,
+        "step": 105.0
+      },
+      {
+        "expected value": 37146.54660998819,
+        "step": 106.0
+      },
+      {
+        "expected value": 66656.55715060953,
+        "step": 107.0
+      },
+      {
+        "expected value": 43506.22709549302,
+        "step": 108.0
+      },
+      {
+        "expected value": 41580.69954329154,
+        "step": 109.0
+      },
+      {
+        "expected value": 53324.832879532616,
+        "step": 110.0
+      },
+      {
+        "expected value": 45160.322051711526,
+        "step": 111.0
+      },
+      {
+        "expected value": 40330.336851997854,
+        "step": 112.0
+      },
+      {
+        "expected value": 44038.74765232857,
+        "step": 113.0
+      },
+      {
+        "expected value": 35951.89131129308,
+        "step": 114.0
+      },
+      {
+        "expected value": 44347.43130714535,
+        "step": 115.0
+      },
+      {
+        "expected value": 55314.51035621145,
+        "step": 116.0
+      },
+      {
+        "expected value": 40521.31339719969,
+        "step": 117.0
+      },
+      {
+        "expected value": 47803.20617675173,
+        "step": 118.0
+      },
+      {
+        "expected value": 68831.4230489882,
+        "step": 119.0
+      },
+      {
+        "expected value": 50730.52606931046,
+        "step": 120.0
+      },
+      {
+        "expected value": 57552.272670167375,
+        "step": 121.0
+      },
+      {
+        "expected value": 51410.72893284705,
+        "step": 122.0
+      },
+      {
+        "expected value": 59002.99553609695,
+        "step": 123.0
+      },
+      {
+        "expected value": 52225.66808725335,
+        "step": 124.0
+      },
+      {
+        "expected value": 40911.6283816955,
+        "step": 125.0
+      },
+      {
+        "expected value": 49654.39319474093,
+        "step": 126.0
+      }
+    ],
+    "engine": "VAR",
+    "future": [
+      {
+        "step": 127.0,
+        "valores": 46882.50437595567
+      },
+      {
+        "step": 128.0,
+        "valores": 56757.05589391728
+      },
+      {
+        "step": 129.0,
+        "valores": 49871.180131272384
+      },
+      {
+        "step": 130.0,
+        "valores": 54495.5188065996
+      },
+      {
+        "step": 131.0,
+        "valores": 80745.43328176874
+      }
+    ],
+    "mae": 4333.758459632441,
+    "mse": 28367715.957128517,
+    "past": [
+      {
+        "anomaly_score": 0.0,
+        "expected value": 44038.74765232857,
+        "mae": 4333.758459632441,
+        "mse": 28367715.957128517,
+        "real_value": 34671.0
+      },
+      {
+        "anomaly_score": 0.04324638924319092,
+        "expected value": 68831.4230489882,
+        "mae": 4333.758459632441,
+        "mse": 28367715.957128517,
+        "real_value": 78352.0
+      },
+      {
+        "anomaly_score": 1.0,
+        "expected value": 52225.66808725335,
+        "mae": 4333.758459632441, 
+        "mse": 28367715.957128517,
+        "real_value": 39324.0
+      }
+    ],
+    "present_alerts": [
+      {
+        "anomaly_score": 0.0,
+        "expected value": 52225.66808725335,
+        "mae": 4333.758459632441,
+        "mse": 28367715.957128517,
+        "real_value": 39324.0
+      }
+    ],
+    "present_status": "TRUE",
+    "rmse": 5326.135180140335,
+    "trend": 188.7910983783276,
+    "winner": "VAR"
+  },
+  "task_dump": "49906ea3-5121-470c-b45b-80af2b446389",
+  "total": 4
+}
