@@ -13,7 +13,7 @@
 
     Timecop URL:<input v-model="timecop_url" placeholder="http://ip172-18-0-8-bpsji37nctv000dlivr0-3000.direct.labs.play-with-docker.com/back_univariate">
     <p v-if="loaded">El mensaje es: {{ message }}</p>
-    <LineTest v-if="loaded" :chart-data="datacollection" />
+    <LineTest v-if="loaded" :chart-data="datacollection" :width="1500" :height="600"/>
     {{datacollection}}
 
     
@@ -33,28 +33,7 @@ export default {
   data (){
       
     return {
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
-              }
-            }],
-            xAxes: [ {
-              gridLines: {
-                display: false
-              }
-            }]
-          },
-          legend: {
-            display: true
-          },
-          responsive: true,
-          maintainAspectRatio: false
-        },
+        
         ts_selected: null,
         response: {},
         ts_graph : null,
