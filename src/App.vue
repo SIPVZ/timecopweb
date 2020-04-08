@@ -14,6 +14,7 @@
     Timecop URL:<input v-model="timecop_url" placeholder="http://ip172-18-0-8-bpsji37nctv000dlivr0-3000.direct.labs.play-with-docker.com/back_univariate">
     <p v-if="loaded">El mensaje es: {{ message }}</p>
     <LineTest v-if="loaded" :chart-data="datacollection" />
+    {{datacollection}}
 
     
   </div>
@@ -32,16 +33,39 @@ export default {
   data (){
       
     return {
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              },
+              gridLines: {
+                display: true
+              }
+            }],
+            xAxes: [ {
+              gridLines: {
+                display: false
+              }
+            }]
+          },
+          legend: {
+            display: true
+          },
+          responsive: true,
+          maintainAspectRatio: false
+        },
         ts_selected: null,
         response: {},
         ts_graph : null,
         ts_grah_name : "Australia monthly production of cars and station wagons  Sep 1962   Sep 1994",
 
-        timecop_url: "https://ip172-18-0-52-bq5o0elim9m000b892c0-443.direct.labs.play-with-docker.com/", 
+        timecop_url: "https://ip172-18-0-39-bq6g8oqosm4g00ensul0-443.direct.labs.play-with-docker.com/", 
         loaded: false,
         test: null,
         Forecast,
         labels: null,
+        datasets: [],
         values: null,
         title: "hola",
         datos_enviados: '{"data":[27566,27621,25696,21653,21197,21620,25596,28327,29892,28206,28718,44288,29219,29644,32218,29586,22089,28209,33675,25075,32186,27235,29864,49103,29164,29603,32186,24415,19784,24414,27565,27195,34042,37434,35694,48706,31852,30595,34674,27604,22198,26123,28663,27622,40449,29890,28611,52268,33107,31596,38201,36443,23401,25007,30838,28133,40717,30156,31128,53754,35064,35736,39570,38185,24885,31983,31330,31692,41228,35142,36248,58774,36981,36434,41582,33090,27913,30197,32034,33434,41170,34119,35007,54617,39892,41970,41204,46232,31122,31839,40017,37335,46586,40656,43900,61656,41678,41267,46116,44875,32437,32732,41276,40579,49177,42140,44589,69672,46057,49286,51877,41966,33160,34671,44117,45356,51756,46904,48200,78352,53264,51909,58021,56304,39324,43422,49671],"name":"fsdfsdfsd","num_future":5,"desv_metric":2,"train":true,"restart":true}',
@@ -58,7 +82,8 @@ export default {
   methods:{
 
     changeTS: function(rowId, event) {
-        this.datacollection.datasets=[]
+        this.datasets=[]
+        this.ts_grah_name= event.target.value
         alert(event.target.value)
         var temp_ts_graph =  this.obtain_ts_by_name()
         console.log(temp_ts_graph)
@@ -95,7 +120,7 @@ export default {
             var N = Math.max.apply(null, keys);
             if (N> max_length){
                 max_length = N;
-            } 
+                } 
             //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
             for (var i=1; i < N ; i++){
                 if (temp_serie[i] !== undefined ) {
@@ -117,10 +142,22 @@ export default {
                 data: miserie
                 };
             console.log(test)
-            this.datacollection.datasets.push(test)
-            this.datacollection.labels = Array.apply(null, {length:max_length}).map(Number.call, Number)
+            
+            this.datasets.push(test)
+            this.labels = Array.apply(null, {length:max_length}).map(Number.call, Number)
+            }
+        // overwrite
+        
+        console.log('new labels & datasets')
+        console.log(this.labels)
+        console.log(this.datasets)
+        this.datacollection= {
+            labels: this.labels,
+            datasets: this.datasets
             }
 
+
+        console.log('new datacollection')
         console.log(this.datacollection.labels)
         console.log(this.datacollection.datasets)
     },
@@ -333,7 +370,7 @@ export default {
 
     this.ts_list()
 
-    this.testFunction()
+    //this.testFunction()
 
 
     this.loaded = true

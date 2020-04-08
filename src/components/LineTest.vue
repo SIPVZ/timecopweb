@@ -6,33 +6,12 @@
   export default {
     extends: Line,
     mixins: [reactiveProp],
-    props: ['title','data1','datos'],
-
+    props: ['options'],
+    
     data () {
       return {
         
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: true
-              }
-            }],
-            xAxes: [ {
-              gridLines: {
-                display: false
-              }
-            }]
-          },
-          legend: {
-            display: true
-          },
-          responsive: true,
-          maintainAspectRatio: false
-        }
+        
       }
     },
     mounted () {
