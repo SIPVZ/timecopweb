@@ -110,16 +110,22 @@ export default {
             
             }
     
+
             var test = {
                 label: ts,
                 fill: false,
-                backgroundColor: this.getRandomColor(),
-                pointBackgroundColor: 'blue',
-                borderWidth: 3,
-                pointBorderColor: this.getRandomColor(),
+                //backgroundColor: this.getRandomColor(),
+                //pointBackgroundColor: 'blue',
+                borderWidth: 1,
+                //pointBorderColor: this.getRandomColor(),
                 borderColor: this.getRandomColor(),
+                
                 data: miserie
                 };
+            if (ts != 'ts') {
+                test['borderDash'] = [10,5]
+                test['borderWidth'] = 3
+            }
             console.log(test)
             
             this.datasets.push(test)

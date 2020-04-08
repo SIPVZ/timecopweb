@@ -14,7 +14,7 @@
           scales: {
             yAxes: [{
               ticks: {
-                beginAtZero: true
+                beginAtZero: false
               },
               gridLines: {
                 display: true
@@ -22,7 +22,7 @@
             }],
             xAxes: [ {
               gridLines: {
-                display: false
+                display: true
               }
             }]
           },
