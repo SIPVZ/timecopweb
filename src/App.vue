@@ -1,6 +1,9 @@
 <template>
 
   <div id="app">
+      Timecop URL:<input v-model="timecop_url" placeholder="http://ip172-18-0-8-bpsji37nctv000dlivr0-3000.direct.labs.play-with-docker.com/back_univariate">
+
+        <br> {{winner}}<br>{{mae}}<br>
       <select  v-if="loaded" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
         <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
                         {{user.name}}
@@ -11,11 +14,10 @@
     <span  v-if="loaded">Selected: {{ ts_selected }}</span>
         <br>
 
-    Timecop URL:<input v-model="timecop_url" placeholder="http://ip172-18-0-8-bpsji37nctv000dlivr0-3000.direct.labs.play-with-docker.com/back_univariate">
     <p v-if="loaded">El mensaje es: {{ message }}</p>
     <LineTest v-if="loaded" :chart-data="datacollection" :width="1500" :height="600"/>
-    {{datacollection}}
 
+    
     
   </div>
 </template>
@@ -33,13 +35,14 @@ export default {
   data (){
       
     return {
-        
+        mae: {},
+        winner: null,
         ts_selected: null,
         response: {},
         ts_graph : null,
         ts_grah_name : "Australia monthly production of cars and station wagons  Sep 1962   Sep 1994",
 
-        timecop_url: "https://ip172-18-0-39-bq6g8oqosm4g00ensul0-443.direct.labs.play-with-docker.com/", 
+        timecop_url: "https://ip172-18-0-39-bq6g8oqosm4g00ensul0-443.direct.labs.play-with-docker.comddd/", 
         loaded: false,
         test: null,
         Forecast,
@@ -63,7 +66,7 @@ export default {
     changeTS: function(rowId, event) {
         this.datasets=[]
         this.ts_grah_name= event.target.value
-        alert(event.target.value)
+        //alert(event.target.value)
         var temp_ts_graph =  this.obtain_ts_by_name()
         console.log(temp_ts_graph)
 
@@ -75,6 +78,15 @@ export default {
         series['ts'] = this.addTS(this.ts_graph.data['ts'], 'ts')
     
         const res = this.ts_graph.data.data.status
+        this.winner = this.ts_graph.data.data.status.winner
+
+        //this.mae['VAR'] = (this.ts.ts_graph.data.data.status.VAR.mae === undefined) ? 'NA' : this.ts.ts_graph.data.data.status.VAR.mae ;
+
+        //this.mae['VAR'] = 
+        //this.mae['Holtwinters'] = this.ts.ts_graph.data.data.status.Holtwinters.mae
+        //this.mae['Autoarima'] = this.ts.ts_graph.data.data.status.Autoarima.mae
+        //this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae
+        
     
         for (const key in res) {
             // no deberia hacer esto :/
@@ -101,7 +113,7 @@ export default {
                 max_length = N;
                 } 
             //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
-            for (var i=1; i < N ; i++){
+            for (var i=0; i < N ; i++){
                 if (temp_serie[i] !== undefined ) {
                     miserie.push(temp_serie[i]);
                 } else {
@@ -288,6 +300,11 @@ export default {
    async mounted () {
     
     this.loaded = false    
+    let uri = window.location.search.substring(1); 
+    let params = new URLSearchParams(uri);
+
+    //alert(this.$route.query.url) // outputs 'yay'
+    this.timecop_url=params.get("url")
 
 
 
