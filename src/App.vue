@@ -17,7 +17,16 @@
     <p v-if="loaded">El mensaje es: {{ message }}</p>
     <LineTest v-if="loaded" :chart-data="datacollection" :width="1500" :height="600"/>
 
-    
+<vue-json-pretty
+      :path="'res'"
+      :data="ts_graph.data"
+      :collapsedOnClickBrackets = true
+      @click="handleClick"
+      :deep=2
+      :showLength = true 
+
+      >
+    </vue-json-pretty>    
     
   </div>
 </template>
@@ -27,10 +36,13 @@ import LineTest from './components/LineTest.vue'
 //import tForm from './components/Form.vue'
 import axios from 'axios'
 import Forecast from './assets/TS.json'
+import VueJsonPretty from 'vue-json-pretty'
+
 export default {
   name: 'App',
   components: {
-    LineTest
+    LineTest,
+    VueJsonPretty
   },
   data (){
       
@@ -82,10 +94,17 @@ export default {
 
         //this.mae['VAR'] = (this.ts.ts_graph.data.data.status.VAR.mae === undefined) ? 'NA' : this.ts.ts_graph.data.data.status.VAR.mae ;
 
+        'VAR' in this.ts_graph.data.data.status ? this.mae['VAR'] = this.ts_graph.data.data.status.VAR.mae : console.log('No VAR')
+        'Holtwinters' in this.ts_graph.data.data.status ? this.mae['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae : console.log('No Holtwinters')
+        'Autoarima' in this.ts_graph.data.data.status ? this.mae['Autoarima'] = this.ts_graph.data.data.status.Autoarima.mae : console.log('No Autoarima')
+        'LSTM' in this.ts_graph.data.data.status ? this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae : console.log('No LSTM')
+
+
         //this.mae['VAR'] = 
         //this.mae['Holtwinters'] = this.ts.ts_graph.data.data.status.Holtwinters.mae
         //this.mae['Autoarima'] = this.ts.ts_graph.data.data.status.Autoarima.mae
         //this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae
+        //this.mae['VAR'] = this.ts_graph.data.data.status.VAR.mae
         
     
         for (const key in res) {

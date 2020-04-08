@@ -16,7 +16,8 @@
     "module": "^1.2.5",
     "mongoose": "^5.9.7",
     "vue": "^2.6.11",
-    "vue-chartjs": "^3.5.0"
+    "vue-chartjs": "^3.5.0",
+    "vue-json-pretty": "^1.6.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
