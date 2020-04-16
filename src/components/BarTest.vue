@@ -7,8 +7,8 @@
     mixins: [reactiveProp],
     props: ['datos_bar'],
     watch: { 
-      	title: function(newVal, oldVal) { // watch it
-          console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+     title: function(newVal, oldVal) { // watch it
+     console.log('Prop changed: ', newVal, ' | was: ', oldVal)
         }
       },
     data () {

@@ -1,39 +1,37 @@
 <template>
 
-  <v-app>
-  <v-container fluid grid-list-md>
-    <v-toolbar dense app>
-      <img v-if="!dark" src="static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
-      <img v-else src="static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
 
-      <v-spacer></v-spacer>
-<button v-on:click="greet">Greet</button>
-           <v-spacer></v-spacer>
-           {{winner}}{{mae}}<v-spacer></v-spacer>
-      <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
+
+
+ <div id="app">
+
+ <v-container>
+  <v-layout row>
+    <v-flex md6>
+
+    </v-flex>
+    <v-flex md6>
+      ...
+    </v-flex>
+  </v-layout> 
+</v-container>
+
+
+        <br> {{winner}}<br>{{mae}}<br>
+      <select  v-if="loaded" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
         <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
                         {{user.name}}
                     </option>
     </select>
-    <v-spacer></v-spacer>
+    <br>
 
-    <v-btn light target="new" >
-         Timecop URL:<input v-model="timecop_url" placeholder="http://ip172-18-0-8-bpsji37nctv000dlivr0-3000.direct.labs.play-with-docker.com/back_univariate">
-    </v-btn>
-           <v-spacer></v-spacer>
+    <span  v-if="loaded">Selected: {{ ts_selected }}</span>
+        <br>
 
-      <v-btn light target="new" href="https://github.com/BBVA/timecop">
-        <img class="mr-2" src="static/github.svg" height="26px" alt="github">
-        <span>github</span>
-      </v-btn>
-     
-      
-    </v-toolbar>
-    <v-layout wrap>
+    <p v-if="loaded">El mensaje es: {{ message }}</p>
+    <LineTest v-if="loaded" :chart-data="datacollection" :width="1500" :height="600"/>
 
-        <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="600"/>
-
-        <vue-json-pretty
+    <vue-json-pretty
       :path="'res'"
       :data="ts_graph.data"
       :collapsedOnClickBrackets = true
@@ -43,68 +41,36 @@
 
       >
     </vue-json-pretty>    
-aqui
-{{ts_graph}}
+    
+</div>
 
-      <v-flex :class="toggleDataVisibility ? 'xs8' : 'xs12'">
-        <t-graph-2d
-        :triggerReset="reset"
-        :dataSet="response"
-        :toggleSize="toggleDataVisibility"
-        :height="350"
-        :margin-left="5"
-        :background="dark ? 'grey darken-3': 'grey lighten-3'"/>
-      </v-flex>
-      <v-flex xs4 v-show="toggleDataVisibility">
-        este es otro de los frames
-      </v-flex>
-    </v-layout>
-  </v-container>
-  </v-app>
-
-   
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld';
 import LineTest from './components/LineTest.vue'
-import VueJsonPretty from 'vue-json-pretty'
+//import tForm from './components/Form.vue'
 import axios from 'axios'
 import Forecast from './assets/TS.json'
-
-
+import VueJsonPretty from 'vue-json-pretty'
 
 export default {
   name: 'App',
-
   components: {
-      LineTest,
-      VueJsonPretty
-      
-
-//    HelloWorld,
+    LineTest,
+    VueJsonPretty
   },
-
-  data: () => ({
-    response: {},
-    selected_ready: false,
-    toggleDataVisibility: true,
-    dark: true,
-    reset: false,
-    datacollection: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            datasets: []
-            },
-    loaded: true,
-    ts_graph: {'data':{"hola": "funciona"}},
-
+  data (){
+      
+    return {
         mae: {},
         winner: null,
         ts_selected: null,
-        
-        ts_grah_name : "Real estate loans  billions   monthly  Jan 1973 Oct 1978",
+        response: {},
+        ts_graph : null,
+        ts_grah_name : "Australia monthly production of cars and station wagons  Sep 1962   Sep 1994",
 
         timecop_url: "https://ip172-18-0-39-bq6g8oqosm4g00ensul0-443.direct.labs.play-with-docker.comddd/", 
+        loaded: false,
         test: null,
         Forecast,
         labels: null,
@@ -114,99 +80,17 @@ export default {
         datos_enviados: '{"data":[27566,27621,25696,21653,21197,21620,25596,28327,29892,28206,28718,44288,29219,29644,32218,29586,22089,28209,33675,25075,32186,27235,29864,49103,29164,29603,32186,24415,19784,24414,27565,27195,34042,37434,35694,48706,31852,30595,34674,27604,22198,26123,28663,27622,40449,29890,28611,52268,33107,31596,38201,36443,23401,25007,30838,28133,40717,30156,31128,53754,35064,35736,39570,38185,24885,31983,31330,31692,41228,35142,36248,58774,36981,36434,41582,33090,27913,30197,32034,33434,41170,34119,35007,54617,39892,41970,41204,46232,31122,31839,40017,37335,46586,40656,43900,61656,41678,41267,46116,44875,32437,32732,41276,40579,49177,42140,44589,69672,46057,49286,51877,41966,33160,34671,44117,45356,51756,46904,48200,78352,53264,51909,58021,56304,39324,43422,49671],"name":"fsdfsdfsd","num_future":5,"desv_metric":2,"train":true,"restart":true}',
 
         message:"",
-        info: null
-
-
-
-
-  }),
-    
-  methods:{
+        info: null,
+        datacollection: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: []
+            }
       
-      greet: function (event) {
-      // `this` inside methods point to the Vue instance
-      this.datasets=[]
-      //alert('Hello ' + this.name + '!')
-      // `event` is the native DOM event
-      alert(event.target.tagName)
-      this.query_data()
-      this.selected_ready=true
+        }
     },
+  methods:{
 
-
-    query_data: function() {
-
-        var temp_ts_graph = this.obtain_ts_by_name()
-        console.log(temp_ts_graph)
-
-
-    
-        const main_ts = this.ts_graph.data
-        console.log(main_ts)
-        const series = {}
-        series['ts'] = this.addTS(this.ts_graph.data['ts'], 'ts')
-    
-    const res = this.ts_graph.data.data.status
-    
-    for (const key in res) {
-        // no deberia hacer esto :/
-        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'Autoarima') {
-            //tengo que añadir el debug y el futuro
-
-            var nombre_serie = key + '-debug'
-            series[nombre_serie] = this.addDebugEngine(res[key], key)
-            nombre_serie = key + '-future'
-            series[nombre_serie] = this.addFutureEngine(res[key], key)
- 
-            }
-        }
-    var max_length = 0;
-    for (const ts in series){
-        var miserie=[]
-        var temp_serie=series[ts]
-        var keys = [];
-
-        for (var k in temp_serie) keys.push(k);
-        
-        var N = Math.max.apply(null, keys);
-        if (N> max_length){
-            max_length = N;
-        } 
-        //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
-        for (var i=1; i < N ; i++){
-            if (temp_serie[i] !== undefined ) {
-                miserie.push(temp_serie[i]);
-            } else {
-                miserie.push(null);
-            }
-            
-        }
-    
-        var test = {
-            label: ts,
-            fill: false,
-            backgroundColor: this.getRandomColor(),
-            pointBackgroundColor: 'blue',
-            borderWidth: 3,
-            pointBorderColor: this.getRandomColor(),
-            borderColor: this.getRandomColor(),
-            data: miserie
-            };
-        console.log(test)
-        this.datasets.push(test)
-        this.labels = Array.apply(null, {length:max_length}).map(Number.call, Number)
-        }
-
-
-    this.ts_list()
-            this.datacollection= {
-            labels: this.labels,
-            datasets: this.datasets
-            }
-
-      },
-
-      changeTS: function(rowId, event) {
+    changeTS: function(rowId, event) {
         this.datasets=[]
         this.ts_grah_name= event.target.value
         //alert(event.target.value)
@@ -307,7 +191,6 @@ export default {
         console.log('new datacollection')
         console.log(this.datacollection.labels)
         console.log(this.datacollection.datasets)
-        
     },
 
 
@@ -447,21 +330,20 @@ export default {
         }
 
       },
-    toggleData () {
-      this.toggleDataVisibility = true
-    },
-    showResponse (e) {
-      this.response = {
-        toPredict: e.dataToProcess,
-        prediction: e.result
-      }
-    }
 	},
+   async mounted () {
+    
+    this.loaded = false    
+    let uri = window.location.search.substring(1); 
+    let params = new URLSearchParams(uri);
 
-    obtain_data: function () {
-        alert(event.target.tagName)
-        var temp_ts_graph = this.obtain_ts_by_name()
-        console.log(temp_ts_graph)
+    //alert(this.$route.query.url) // outputs 'yay'
+    this.timecop_url=params.get("url")
+
+
+
+    var temp_ts_graph =  await this.obtain_ts_by_name()
+    console.log(temp_ts_graph)
 
 
     
@@ -524,20 +406,23 @@ export default {
 
     this.ts_list()
 
+    //this.testFunction()
 
-    },
 
+    this.loaded = true
+    }
+    
+}
 
-  mounted () {
-    this.$vuetify.theme.dark = true
-
-  },
-  
-};
 </script>
+
 <style>
-.column-code {
-  height: 85vh;
-  overflow-y: scroll;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>
