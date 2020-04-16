@@ -3,36 +3,46 @@
   <v-app>
   <v-container fluid grid-list-md>
     <v-toolbar dense app>
-      <img v-if="!dark" src="static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
-      <img v-else src="static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
+      <img v-if="!dark" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
+      <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
 
       <v-spacer></v-spacer>
-<button v-on:click="greet">Greet</button>
+            <button v-on:click="greet">Ask for results</button>
            <v-spacer></v-spacer>
-           {{winner}}{{mae}}<v-spacer></v-spacer>
-      <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
-        <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
-                        {{user.name}}
-                    </option>
-    </select>
+           <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="70%" class="pa-1" alt="Time Cop">
+           
+           {{winner}}   
+           
+            <img v-if="selected_ready" src="https://i.dlpng.com/static/png/4153176-metrics-icons-free-download-png-and-svg-metrics-png-200_200_preview.webp" height="90%" class="pa-1" alt="Time Cop">
+             {{mae}}
+             <v-spacer></v-spacer>
+
     <v-spacer></v-spacer>
 
     <v-btn light target="new" >
-         Timecop URL:<input v-model="timecop_url" placeholder="http://ip172-18-0-8-bpsji37nctv000dlivr0-3000.direct.labs.play-with-docker.com/back_univariate">
+         Timecop URL:<input v-model="timecop_url" placeholder="Timecop Server">
     </v-btn>
            <v-spacer></v-spacer>
 
       <v-btn light target="new" href="https://github.com/BBVA/timecop">
-        <img class="mr-2" src="static/github.svg" height="26px" alt="github">
+        <img class="mr-2" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/github.svg" height="26px" alt="github">
         <span>github</span>
       </v-btn>
      
       
     </v-toolbar>
     <v-layout wrap>
+    <v-row >
+          <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
+        <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
+                        {{user.name}}
+                    </option>
+    </select>
+      </v-row>
 
+    <v-row >
         <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="600"/>
-
+    </v-row>
         <vue-json-pretty
       :path="'res'"
       :data="ts_graph.data"
@@ -43,8 +53,8 @@
 
       >
     </vue-json-pretty>    
-aqui
-{{ts_graph}}
+        aqui
+        {{ts_graph}}
 
       <v-flex :class="toggleDataVisibility ? 'xs8' : 'xs12'">
         <t-graph-2d
@@ -104,7 +114,7 @@ export default {
         
         ts_grah_name : "Real estate loans  billions   monthly  Jan 1973 Oct 1978",
 
-        timecop_url: "https://ip172-18-0-39-bq6g8oqosm4g00ensul0-443.direct.labs.play-with-docker.comddd/", 
+        timecop_url: "Timecop Web server", 
         test: null,
         Forecast,
         labels: null,
