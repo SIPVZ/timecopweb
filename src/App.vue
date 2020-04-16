@@ -53,8 +53,7 @@
 
       >
     </vue-json-pretty>    
-        aqui
-        {{ts_graph}}
+       
 
       <v-flex :class="toggleDataVisibility ? 'xs8' : 'xs12'">
         <t-graph-2d
