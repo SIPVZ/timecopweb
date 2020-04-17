@@ -1,7 +1,8 @@
 <template>
 
-  <v-app>
-  <v-container fluid grid-list-md>
+  <v-app id="inspire">
+  <v-container fluid grid-list-xl>
+
     <v-toolbar dense app>
       <img v-if="!dark" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
       <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
@@ -14,7 +15,8 @@
            {{winner}}   
            
             <img v-if="selected_ready" src="https://i.dlpng.com/static/png/4153176-metrics-icons-free-download-png-and-svg-metrics-png-200_200_preview.webp" height="90%" class="pa-1" alt="Time Cop">
-             {{mae}}
+            {{mae}}
+
              <v-spacer></v-spacer>
 
     <v-spacer></v-spacer>
@@ -31,18 +33,41 @@
      
       
     </v-toolbar>
-    <v-layout wrap>
-    <v-row >
-          <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
+  
+  
+        <v-layout v-bind="binding"  row wrap>
+
+        <v-flex>
+          <v-card dark color="primary">
+            <v-card-text>Select Time series to visualize</v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex>
+          <v-card dark color="secondary">
+          TS Desplegable
+            <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
+        <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
+                        {{user.name}}
+                    </option>
+    </select>
+          </v-card>
+        </v-flex>
+        
+
+      <v-row >
+
+              <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
         <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
                         {{user.name}}
                     </option>
     </select>
       </v-row>
-
-    <v-row >
-        <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="600"/>
-    </v-row>
+        <v-row>
+      <v-col >
+        <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="800"/>
+      </v-col>
+      <v-col xs4 >
         <vue-json-pretty
       :path="'res'"
       :data="ts_graph.data"
@@ -53,21 +78,13 @@
 
       >
     </vue-json-pretty>    
-       
+      </v-col>
 
-      <v-flex :class="toggleDataVisibility ? 'xs8' : 'xs12'">
-        <t-graph-2d
-        :triggerReset="reset"
-        :dataSet="response"
-        :toggleSize="toggleDataVisibility"
-        :height="350"
-        :margin-left="5"
-        :background="dark ? 'grey darken-3': 'grey lighten-3'"/>
-      </v-flex>
-      <v-flex xs4 v-show="toggleDataVisibility">
-        este es otro de los frames
-      </v-flex>
+      </v-row>
     </v-layout>
+
+
+
   </v-container>
   </v-app>
 
