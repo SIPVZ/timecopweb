@@ -14,7 +14,7 @@
            
            {{winner}}   
            
-            <img v-if="selected_ready" src="https://img.icons8.com/cotton/64/000000/laptop-metrics.png" height="90%" class="pa-1" alt="Time Cop">
+            <img v-if="selected_ready" src="https://i.dlpng.com/static/png/4153176-metrics-icons-free-download-png-and-svg-metrics-png-200_200_preview.webp" height="90%" class="pa-1" alt="Time Cop">
             LSTM: {{mae['LSTM']}} VAR: {{mae['VAR']}} Holtwinters: {{mae['Holtwinters']}} Arima: {{mae['Arima']}}
 
              <v-spacer></v-spacer>
@@ -45,35 +45,41 @@
 
         <v-flex>
           <v-card dark color="secondary">
-            TS Desplegable <br>
+          TS Desplegable
             <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
-              <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
-                {{user.name}}
-              </option>
-            </select>
+        <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
+                        {{user.name}}
+                    </option>
+    </select>
           </v-card>
         </v-flex>
         
 
       <v-row >
 
+              <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
+        <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
+                        {{user.name}}
+                    </option>
+    </select>
       </v-row>
-      <v-row>
-        <v-col >
-          <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="800"/>
-        </v-col>
-        <v-col xs4 >
-          <vue-json-pretty
-            :path="'res'"
-            :data="ts_graph.data"
-            :collapsedOnClickBrackets = true
-            @click="handleClick"
-            :deep=2
-            :showLength = true 
+        <v-row>
+      <v-col >
+        <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="800"/>
+      </v-col>
+      <v-col xs4 >
+        <vue-json-pretty
+      :path="'res'"
+      :data="ts_graph.data"
+      :collapsedOnClickBrackets = true
+      @click="handleClick"
+      :deep=2
+      :showLength = true 
 
-          >
-          </vue-json-pretty>    
-        </v-col>
+      >
+    </vue-json-pretty>    
+      </v-col>
+
       </v-row>
     </v-layout>
 
