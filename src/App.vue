@@ -8,7 +8,7 @@
       <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
 
       <v-spacer></v-spacer>
-            <button v-on:click="greet">Ask for results</button>
+            <button v-on:click="greet">Load for data</button>
            <v-spacer></v-spacer>
            <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="70%" class="pa-1" alt="Time Cop">
            
@@ -37,6 +37,38 @@
   
         <v-layout v-bind="binding"  row wrap>
 
+
+        <v-flex>
+              <v-dialog v-model="dialog" persistent max-width="600px">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark v-on="on">Set Timecop server</v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="headline">Timecop Server Profile</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                
+                <v-col cols="12">
+                  <v-text-field label="URL for timecop Server" v-model="timecop_url" required></v-text-field>
+                </v-col>
+                
+              </v-row>
+            </v-container>
+            <small>*indicates required field</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      </v-flex>
+
+
         <v-flex>
           <v-card dark color="primary">
             <v-card-text>Select Time series to visualize</v-card-text>
@@ -44,7 +76,7 @@
         </v-flex>
 
         <v-flex>
-          <v-card dark color="secondary">
+          <v-card v-if="selected_ready" dark color="secondary">
             TS Desplegable <br>
             <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
               <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
@@ -100,12 +132,10 @@ export default {
   components: {
       LineTest,
       VueJsonPretty
-      
-
-//    HelloWorld,
-  },
+      },
 
   data: () => ({
+    dialog: true,
     response: {},
     selected_ready: false,
     toggleDataVisibility: true,
@@ -148,7 +178,8 @@ export default {
       this.datasets=[]
       //alert('Hello ' + this.name + '!')
       // `event` is the native DOM event
-      alert(event.target.tagName)
+      //alert(event.target.tagName)
+      console.log(event.target.tagName)
       this.query_data()
       this.selected_ready=true
       },
@@ -526,7 +557,7 @@ export default {
             
         }
     
-        var test = {
+        /*var test = {
             label: ts,
             fill: false,
             backgroundColor: this.getRandomColor(),
@@ -535,7 +566,23 @@ export default {
             pointBorderColor: this.getRandomColor(),
             borderColor: this.getRandomColor(),
             data: miserie
+            };*/
+
+        var test = {
+            label: ts,
+            fill: false,
+                //backgroundColor: this.getRandomColor(),
+                //pointBackgroundColor: 'blue',
+            borderWidth: 1,
+                //pointBorderColor: this.getRandomColor(),
+            borderColor: this.getRandomColor(),
+                
+            data: miserie
             };
+        if (ts != 'ts') {
+            test['borderDash'] = [10,5]
+            test['borderWidth'] = 3
+        }
         console.log(test)
         this.datacollection.datasets.push(test)
         this.datacollection.labels = Array.apply(null, {length:max_length}).map(Number.call, Number)
