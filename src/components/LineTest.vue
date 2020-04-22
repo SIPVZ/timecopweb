@@ -27,7 +27,12 @@
             }]
           },
           legend: {
-            display: true
+            display: true,
+            position: "bottom",
+            labels: {
+              fontSize: 30,
+              fontFamily: "sans-serif"
+            }
           },
           responsive: true,
           maintainAspectRatio: false

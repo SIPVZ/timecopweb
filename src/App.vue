@@ -1,22 +1,15 @@
 <template>
 
   <v-app id="inspire">
-  <v-container fluid grid-list-xl>
+  <v-container fluid grid-list-lg>
 
     <v-toolbar dense app>
       <img v-if="!dark" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
       <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
 
       <v-spacer></v-spacer>
-            <button v-on:click="greet">Load for data</button>
            <v-spacer></v-spacer>
-           <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="70%" class="pa-1" alt="Time Cop">
            
-           {{winner}}   
-           
-            <img v-if="selected_ready" src="https://img.icons8.com/cotton/64/000000/laptop-metrics.png" height="90%" class="pa-1" alt="Time Cop">
-            LSTM: {{mae['LSTM']}} VAR: {{mae['VAR']}} Holtwinters: {{mae['Holtwinters']}} Arima: {{mae['Arima']}}
-
              <v-spacer></v-spacer>
 
     <v-spacer></v-spacer>
@@ -38,6 +31,8 @@
         <v-layout v-bind="binding"  row wrap>
 
 
+      <v-row>
+        <v-col>
         <v-flex>
               <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
@@ -62,23 +57,39 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="greet($event); dialog = false">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       </v-flex>
+      </v-col>
+      
+      <v-col>
+            <v-btn @click.native="greet($event)" color="primary">Load Data from timecop server</v-btn>
+            
+      </v-col>
 
+        <v-flex v-if="selected_ready">
+           <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="50" class="pa-1" alt="Time Cop">
+           
+           {{winner}}   
+           
+            <img v-if="selected_ready" src="https://img.icons8.com/cotton/64/000000/laptop-metrics.png" height="50" class="pa-1" alt="Time Cop">
+            LSTM: {{mae['LSTM']}} VAR: {{mae['VAR']}} Holtwinters: {{mae['Holtwinters']}} Arima: {{mae['arima']}} Gluonts: {{mae['gluonts']}} Prophet: {{mae['fbprophet']}}
+        </v-flex>
 
+      </v-row>
+      <v-row>
         <v-flex>
           <v-card dark color="primary">
-            <v-card-text>Select Time series to visualize</v-card-text>
+            <v-card-text v-if="selected_ready">Select Time series to visualize</v-card-text>
           </v-card>
         </v-flex>
 
+
         <v-flex>
           <v-card v-if="selected_ready" dark color="secondary">
-            TS Desplegable <br>
-            <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)">
+            <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)"  filled label="Filled style">
               <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
                 {{user.name}}
               </option>
@@ -86,10 +97,9 @@
           </v-card>
         </v-flex>
         
-
-      <v-row >
-
       </v-row>
+
+      <v-divider></v-divider>
       <v-row>
         <v-col >
           <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="800"/>
@@ -176,7 +186,7 @@ export default {
     greet: function (event) {
       // `this` inside methods point to the Vue instance
       this.datasets=[]
-      //alert('Hello ' + this.name + '!')
+      //alert('Hello ' + event + '!')
       // `event` is the native DOM event
       //alert(event.target.tagName)
       console.log(event.target.tagName)
@@ -278,8 +288,10 @@ export default {
 
         'VAR' in this.ts_graph.data.data.status ? this.mae['VAR'] = this.ts_graph.data.data.status.VAR.mae : console.log('No VAR')
         'Holtwinters' in this.ts_graph.data.data.status ? this.mae['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae : console.log('No Holtwinters')
-        'Autoarima' in this.ts_graph.data.data.status ? this.mae['Autoarima'] = this.ts_graph.data.data.status.Autoarima.mae : console.log('No Autoarima')
+        'arima' in this.ts_graph.data.data.status ? this.mae['arima'] = this.ts_graph.data.data.status.arima.mae : console.log('No Autoarima')
         'LSTM' in this.ts_graph.data.data.status ? this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae : console.log('No LSTM')
+        'fbprophet' in this.ts_graph.data.data.status ? this.mae['fbprophet'] = this.ts_graph.data.data.status.fbprophet.mae : console.log('No fbprophet')
+        'gluonts' in this.ts_graph.data.data.status ? this.mae['gluonts'] = this.ts_graph.data.data.status.gluonts.mae : console.log('No gluonts')
 
 
         //this.mae['VAR'] = 
@@ -291,7 +303,7 @@ export default {
     
         for (const key in res) {
             // no deberia hacer esto :/
-            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'Autoarima') {
+            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
                 //tengo que añadir el debug y el futuro
 
                 var nombre_serie = key + '-debug'
@@ -525,7 +537,7 @@ export default {
     
     for (const key in res) {
         // no deberia hacer esto :/
-        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'Autoarima') {
+        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
             //tengo que añadir el debug y el futuro
 
             var nombre_serie = key + '-debug'
