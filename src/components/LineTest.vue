@@ -56,11 +56,11 @@
               mode: 'xy',
           },
           tooltips: {
-					  mode: 'index',
+            mode: 'index',
             intersect: false,
             titleFontSize: 25,
             bodyFontSize: 20
-				  }
+          }
 
         }
         

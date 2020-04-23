@@ -52,16 +52,12 @@
           <span>github</span>
         </v-btn>
       </v-flex>
-    </v-toolbar>
-  
-  
-    <v-layout v-bind="binding"  row wrap>
+    </v-toolbar>  
 
+    <v-layout v-bind="binding"  row wrap>
       <v-row>
         <v-col>
         <v-flex v-if="selected_ready">
-              
-           
 
             <v-simple-table>
               <thead >
