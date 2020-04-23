@@ -7,33 +7,8 @@
       <img v-if="!dark" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
       <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
 
-      <v-spacer></v-spacer>
-           <v-spacer></v-spacer>
-           
-             <v-spacer></v-spacer>
 
-    <v-spacer></v-spacer>
-
-    <v-btn light target="new" >
-         Timecop URL:<input v-model="timecop_url" placeholder="Timecop Server">
-    </v-btn>
-           <v-spacer></v-spacer>
-
-      <v-btn light target="new" href="https://github.com/BBVA/timecop">
-        <img class="mr-2" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/github.svg" height="26px" alt="github">
-        <span>github</span>
-      </v-btn>
-     
-      
-    </v-toolbar>
-  
-  
-        <v-layout v-bind="binding"  row wrap>
-
-
-      <v-row>
-        <v-col>
-        <v-flex>
+<v-flex>
               <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark v-on="on">Set Timecop server</v-btn>
@@ -62,24 +37,57 @@
         </v-card>
       </v-dialog>
       </v-flex>
-      </v-col>
-      
-      <v-col>
-            <v-btn @click.native="greet($event)" color="primary">Load Data from timecop server</v-btn>
-            
-      </v-col>
 
+      <v-flex xs3 offset-xs9 >
+
+        <v-btn light target="new" >
+          Timecop URL:<input v-model="timecop_url" placeholder="Timecop Server">
+        </v-btn>
+      </v-flex>
+
+      <v-flex xs3 offset-xs9 >
+
+        <v-btn light target="new" href="https://github.com/BBVA/timecop">
+          <img class="mr-2" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/github.svg" height="26px" alt="github">
+          <span>github</span>
+        </v-btn>
+      </v-flex>
+    </v-toolbar>
+  
+  
+    <v-layout v-bind="binding"  row wrap>
+
+      <v-row>
+        <v-col>
         <v-flex v-if="selected_ready">
-           <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="50" class="pa-1" alt="Time Cop">
+              
            
-           {{winner}}   
+
+            <v-simple-table>
+              <thead >
+              <tr><th class="text-left">Algorithm</th><th class="text-left">metric</th></tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(item,index) in mae">
+                    <td>{{ index }}</td><td>    {{item}}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>     
+        </v-flex>
+        </v-col>
+      
+
+      
+      </v-row>
+      
+      <v-row>
+        <v-flex>
+
+        <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="50" class="pa-1" alt="Time Cop">
            
-            <img v-if="selected_ready" src="https://img.icons8.com/cotton/64/000000/laptop-metrics.png" height="50" class="pa-1" alt="Time Cop">
-            LSTM: {{mae['LSTM']}} VAR: {{mae['VAR']}} Holtwinters: {{mae['Holtwinters']}} Arima: {{mae['arima']}} Gluonts: {{mae['gluonts']}} Prophet: {{mae['fbprophet']}}
+           {{winner}}
         </v-flex>
 
-      </v-row>
-      <v-row>
         <v-flex>
           <v-card dark color="primary">
             <v-card-text v-if="selected_ready">Select Time series to visualize</v-card-text>
@@ -96,6 +104,33 @@
             </select>
           </v-card>
         </v-flex>
+      
+     </v-row>
+      <v-row>
+
+
+        <v-col v-if="selected_ready">
+      <v-dialog v-model="dialog_json" persistent width="600px">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark v-on="on">More info</v-btn>
+        </template>
+        <v-card>
+        <vue-json-pretty
+            :path="'res'"
+            :data="ts_graph.data"
+            :collapsedOnClickBrackets = true
+            :deep=2
+            :showLength = true 
+
+
+          >
+          </vue-json-pretty>            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="dialog_json = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      </v-col>
         
       </v-row>
 
@@ -104,18 +139,7 @@
         <v-col >
           <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="800"/>
         </v-col>
-        <v-col xs4 >
-          <vue-json-pretty
-            :path="'res'"
-            :data="ts_graph.data"
-            :collapsedOnClickBrackets = true
-            @click="handleClick"
-            :deep=2
-            :showLength = true 
-
-          >
-          </vue-json-pretty>    
-        </v-col>
+        
       </v-row>
     </v-layout>
 
@@ -145,6 +169,7 @@ export default {
       },
 
   data: () => ({
+    dialog_json: false,
     dialog: true,
     response: {},
     selected_ready: false,
@@ -181,7 +206,7 @@ export default {
 
   }),
     
-  methods:{
+  methods: {  
       
     greet: function (event) {
       // `this` inside methods point to the Vue instance
@@ -251,7 +276,8 @@ export default {
             borderWidth: 3,
             pointBorderColor: this.getRandomColor(),
             borderColor: this.getRandomColor(),
-            data: miserie
+            data: miserie,
+            pointRadius: 0
             };
         console.log(test)
         this.datasets.push(test)
@@ -341,15 +367,15 @@ export default {
                 fill: false,
                 //backgroundColor: this.getRandomColor(),
                 //pointBackgroundColor: 'blue',
-                borderWidth: 1,
+                borderWidth: 6,
                 //pointBorderColor: this.getRandomColor(),
                 borderColor: this.getRandomColor(),
-                
+                pointRadius: 1,
                 data: miserie
                 };
             if (ts != 'ts') {
-                test['borderDash'] = [10,5]
-                test['borderWidth'] = 3
+                test['borderDash'] = [15,5]
+                test['borderWidth'] = 2
             }
             console.log(test)
             

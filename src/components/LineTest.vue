@@ -1,5 +1,7 @@
 <script>
   import { Line, mixins } from 'vue-chartjs'
+  import zoom from 'chartjs-plugin-zoom';
+
   const { reactiveProp } = mixins
 
 
@@ -35,7 +37,31 @@
             }
           },
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          pan: {
+              // Boolean to enable panning
+              enabled: true,
+
+              // Panning directions. Remove the appropriate direction to disable 
+              // Eg. 'y' would only allow panning in the y direction
+              mode: 'xy'
+          },
+          // Container for zoom options
+          zoom: {
+              // Boolean to enable zooming
+              enabled: true,
+
+              // Zooming directions. Remove the appropriate direction to disable 
+              // Eg. 'y' would only allow zooming in the y direction
+              mode: 'xy',
+          },
+          tooltips: {
+					  mode: 'index',
+            intersect: false,
+            titleFontSize: 25,
+            bodyFontSize: 20
+				  }
+
         }
         
         
@@ -43,6 +69,7 @@
     },
     mounted () {
       console.log (this.chartData)
+      this.addPlugin(zoom);
       this.renderChart(this.chartData, this.options)
     }
   }
