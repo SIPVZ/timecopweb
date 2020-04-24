@@ -1,15 +1,19 @@
 <template>
 
   <v-app id="inspire">
-  <v-container fluid grid-list-lg>
+  <v-container fluid grid-list-md>
 
     <v-toolbar dense app>
       <img v-if="!dark" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
       <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
 
 
-<v-flex>
-              <v-dialog v-model="dialog" persistent max-width="600px">
+
+
+
+
+      <v-flex>
+      <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark v-on="on">Set Timecop server</v-btn>
         </template>
@@ -45,6 +49,8 @@
         </v-btn>
       </v-flex>
 
+ 
+
       <v-flex xs3 offset-xs9 >
 
         <v-btn light target="new" href="https://github.com/BBVA/timecop">
@@ -55,88 +61,99 @@
     </v-toolbar>  
 
     <v-layout v-bind="binding"  row wrap>
-      <v-row>
-        <v-col>
-        <v-flex v-if="selected_ready">
+
+        <v-flex v-if="selected_ready" d-flex xs12 sm6 md3>
 
             <v-simple-table>
               <thead >
-              <tr><th class="text-left">Algorithm</th><th class="text-left">metric</th></tr>
+              <tr><th class="text-left">Algorithm</th><th class="text-left">mae</th><th class="text-left">mse</th></tr>
               </thead>
               <tbody>
-                  <tr v-for="(item,index) in mae">
-                    <td>{{ index }}</td><td>    {{item}}</td>
+                  <tr v-for="item in metrics" :key="item.name">
+                    <td>{{ item.name }}</td><td>    {{item.mae.toFixed(3)}}</td> <td>    {{item.mse.toFixed(3)}}</td>
                 </tr>
               </tbody>
             </v-simple-table>     
         </v-flex>
-        </v-col>
-      
 
-      
-      </v-row>
-      
-      <v-row>
-        <v-flex>
+        <v-flex  d-flex xs12 sm12 md9>
+          <v-layout row wrap justify-center>
+            <v-flex v-if="selected_ready"  xs6>
+               <v-card dark color="secondary" class="justify-center">
+                 <v-card-title primary-title class="justify-center">
 
-        <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="50" class="pa-1" alt="Time Cop">
-           
-           {{winner}}
-        </v-flex>
 
-        <v-flex>
-          <v-card dark color="primary">
+                    <img v-if="selected_ready" src="https://truckersagainsttrafficking.org/wp-content/uploads/2018/10/if_advantage_quality_1034364-256x256.png" height="50"  alt="Time Cop">
+                    And the winner is... <br>{{winner}}
+                 </v-card-title>
+                 <v-card-text class="justify-center">
+                   
+                </v-card-text>
+
+               </v-card>
+            </v-flex>
+
+          <v-flex d-flex xs12>
+
+          <v-card v-if="selected_ready" dark color="secondary">
+            <v-card dark color="primary">
             <v-card-text v-if="selected_ready">Select Time series to visualize</v-card-text>
           </v-card>
-        </v-flex>
-
-
-        <v-flex>
-          <v-card v-if="selected_ready" dark color="secondary">
             <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)"  filled label="Filled style">
               <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
                 {{user.name}}
               </option>
             </select>
           </v-card>
-        </v-flex>
-      
-     </v-row>
-      <v-row>
+            </v-flex>
+
+          
+          <v-flex d-flex xs12>
+
+          <v-dialog v-if="selected_ready" v-model="dialog_json" persistent width="600px">
+            <template v-slot:activator="{ on }">
+              <div class="text-xs-center">
+
+              <v-btn color="primary" dark v-on="on">More info</v-btn>
+              </div>
+            </template>
+            <br>
+            <v-card>
+            <vue-json-pretty
+              :path="'res'"
+              :data="ts_graph.data"
+              :collapsedOnClickBrackets = true
+              :deep=2
+              :showLength = true 
 
 
-        <v-col v-if="selected_ready">
-      <v-dialog v-model="dialog_json" persistent width="600px">
-        <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark v-on="on">More info</v-btn>
-        </template>
-        <v-card>
-        <vue-json-pretty
-            :path="'res'"
-            :data="ts_graph.data"
-            :collapsedOnClickBrackets = true
-            :deep=2
-            :showLength = true 
-
-
-          >
+             >
           </vue-json-pretty>            <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="green darken-1" text @click="dialog_json = false">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-      </v-col>
-        
-      </v-row>
 
-      <v-divider></v-divider>
-      <v-row>
-        <v-col >
-          <LineTest v-if="loaded" :chart-data="datacollection" :width="2100" :height="800"/>
-        </v-col>
-        
-      </v-row>
+             </v-flex>
+
+
+
+
+
+            
+            
+            
+          </v-layout>
+        </v-flex>
+ 
+
+        <v-flex d-flex  xs6 sm2 md11>
+
+          <LineTest v-if="loaded" :chart-data="datacollection" :width="1800" :height="500"/>
+        </v-flex>
+
+
     </v-layout>
 
 
@@ -165,6 +182,7 @@ export default {
       },
 
   data: () => ({
+    metrics: [],
     dialog_json: false,
     dialog: true,
     response: {},
@@ -307,10 +325,70 @@ export default {
         this.winner = this.ts_graph.data.data.status.winner
 
         //this.mae['VAR'] = (this.ts.ts_graph.data.data.status.VAR.mae === undefined) ? 'NA' : this.ts.ts_graph.data.data.status.VAR.mae ;
+        
+        this.metrics=[]
+        console.log('#####################Llega')
+        
+        if ('VAR' in this.ts_graph.data.data.status) {
+          console.log('entra en VAR')
+          var  dic_temp={}
+          dic_temp['VAR'] = this.ts_graph.data.data.status.VAR.mae
+          dic_temp['name']  = 'VAR'
+          dic_temp['mae'] = this.ts_graph.data.data.status.VAR.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.VAR.mse
 
-        'VAR' in this.ts_graph.data.data.status ? this.mae['VAR'] = this.ts_graph.data.data.status.VAR.mae : console.log('No VAR')
-        'Holtwinters' in this.ts_graph.data.data.status ? this.mae['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae : console.log('No Holtwinters')
-        'arima' in this.ts_graph.data.data.status ? this.mae['arima'] = this.ts_graph.data.data.status.arima.mae : console.log('No Autoarima')
+          this.metrics.push(dic_temp)
+          } 
+        if ('Holtwinters' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae
+          dic_temp['name']  = 'Holtwinters'
+          dic_temp['mae'] = this.ts_graph.data.data.status.Holtwinters.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.Holtwinters.mse
+
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('arima' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['arima'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'arima'
+          dic_temp['mae'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.arima.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('LSTM' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['LSTM'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'LSTM'
+          dic_temp['mae'] = this.ts_graph.data.data.status.LSTM.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.LSTM.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('fbprophet' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['fbprophet'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'fbprophet'
+          dic_temp['mae'] = this.ts_graph.data.data.status.fbprophet.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.fbprophet.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('gluonts' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['gluonts'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'gluonts'
+          dic_temp['mae'] = this.ts_graph.data.data.status.gluonts.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.gluonts.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        
+        
+        //'Holtwinters' in this.ts_graph.data.data.status ? this.mae['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae : console.log('No Holtwinters')
+        //'arima' in this.ts_graph.data.data.status ? this.mae['arima'] = this.ts_graph.data.data.status.arima.mae : console.log('No Autoarima')
         'LSTM' in this.ts_graph.data.data.status ? this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae : console.log('No LSTM')
         'fbprophet' in this.ts_graph.data.data.status ? this.mae['fbprophet'] = this.ts_graph.data.data.status.fbprophet.mae : console.log('No fbprophet')
         'gluonts' in this.ts_graph.data.data.status ? this.mae['gluonts'] = this.ts_graph.data.data.status.gluonts.mae : console.log('No gluonts')

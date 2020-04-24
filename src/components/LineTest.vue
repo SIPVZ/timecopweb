@@ -32,7 +32,7 @@
             display: true,
             position: "bottom",
             labels: {
-              fontSize: 30,
+              fontSize: 20,
               fontFamily: "sans-serif"
             }
           },
