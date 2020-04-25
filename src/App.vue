@@ -191,11 +191,11 @@ export default {
     dark: true,
     reset: false,
     datacollection: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            labels: ['1','2','3','4','5','6','7','8'],
             datasets: []
             },
     loaded: true,
-    ts_graph: {'data':{"hola": "funciona"}},
+    ts_graph: {'data':{" ": " "}},
 
         mae: {},
         winner: null,
@@ -229,7 +229,9 @@ export default {
       // `event` is the native DOM event
       //alert(event.target.tagName)
       console.log(event.target.tagName)
-      this.query_data()
+      this.ts_list()
+
+      //this.query_data()
       this.selected_ready=true
       },
 
@@ -246,11 +248,11 @@ export default {
         const series = {}
         series['ts'] = this.addTS(this.ts_graph.data['ts'], 'ts')
     
-    const res = this.ts_graph.data.data.status
+        const res = this.ts_graph.data.data.status
     
-    for (const key in res) {
-        // no deberia hacer esto :/
-        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'Autoarima') {
+        for (const key in res) {
+          // no deberia hacer esto :/
+          if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'Autoarima') {
             //tengo que añadir el debug y el futuro
 
             var nombre_serie = key + '-debug'
@@ -260,25 +262,25 @@ export default {
  
             }
         }
-    var max_length = 0;
-    for (const ts in series){
-        var miserie=[]
-        var temp_serie=series[ts]
-        var keys = [];
+        var max_length = 0;
+        for (const ts in series){
+          var miserie=[]
+          var temp_serie=series[ts]
+          var keys = [];
 
-        for (var k in temp_serie) keys.push(k);
+          for (var k in temp_serie) keys.push(k);
         
-        var N = Math.max.apply(null, keys);
-        if (N> max_length){
-            max_length = N;
-        } 
-        //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
-        for (var i=1; i < N ; i++){
-            if (temp_serie[i] !== undefined ) {
+            var N = Math.max.apply(null, keys);
+            if (N> max_length){
+              max_length = N;
+            } 
+            //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
+            for (var i=1; i < N ; i++){
+              if (temp_serie[i] !== undefined ) {
                 miserie.push(temp_serie[i]);
-            } else {
+              } else {
                 miserie.push(null);
-            }
+              }
             
         }
     
@@ -299,7 +301,6 @@ export default {
         }
 
 
-    this.ts_list()
             this.datacollection= {
             labels: this.labels,
             datasets: this.datasets
@@ -389,9 +390,9 @@ export default {
         
         //'Holtwinters' in this.ts_graph.data.data.status ? this.mae['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae : console.log('No Holtwinters')
         //'arima' in this.ts_graph.data.data.status ? this.mae['arima'] = this.ts_graph.data.data.status.arima.mae : console.log('No Autoarima')
-        'LSTM' in this.ts_graph.data.data.status ? this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae : console.log('No LSTM')
-        'fbprophet' in this.ts_graph.data.data.status ? this.mae['fbprophet'] = this.ts_graph.data.data.status.fbprophet.mae : console.log('No fbprophet')
-        'gluonts' in this.ts_graph.data.data.status ? this.mae['gluonts'] = this.ts_graph.data.data.status.gluonts.mae : console.log('No gluonts')
+        //'LSTM' in this.ts_graph.data.data.status ? this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae : console.log('No LSTM')
+        //'fbprophet' in this.ts_graph.data.data.status ? this.mae['fbprophet'] = this.ts_graph.data.data.status.fbprophet.mae : console.log('No fbprophet')
+        //'gluonts' in this.ts_graph.data.data.status ? this.mae['gluonts'] = this.ts_graph.data.data.status.gluonts.mae : console.log('No gluonts')
 
 
         //this.mae['VAR'] = 
@@ -495,6 +496,8 @@ export default {
         var v = this;
 
         var ts_temp = {}
+
+        alert (this.ts_grah_name)
         var datos_a_enviar = '{"collection_ts": "ts", "collection_timecop": "timecop", "url": "mongodb://webserver:webserver1@ds261570.mlab.com:61570/ts?retryWrites=false", "database": "ts", "name": "'+this.ts_grah_name +'" }'
         console.log ('datos a enviar' + datos_a_enviar)
         await axios.post(this.timecop_url+'/result_document' , datos_a_enviar, {headers: {'content-type': 'application/json'}})
@@ -505,7 +508,8 @@ export default {
                 //}
                 
                 
-                v.ts_graph = response; 
+                v.ts_graph = response;
+                alert('llega hasta aqui') 
                 
                 
                 ts_temp = response;
@@ -701,7 +705,7 @@ export default {
         }
 
 
-    this.ts_list()
+    //this.ts_list()
 
 
     },
