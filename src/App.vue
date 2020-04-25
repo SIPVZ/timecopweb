@@ -221,6 +221,159 @@ export default {
   }),
     
   methods: {  
+        draw_TS: function () {
+        const main_ts = this.ts_graph.data
+        console.log(main_ts)
+        alert('esta es la serie que dibujo ' + main_ts.name)
+        const series = {}
+        series['ts'] = this.addTS(this.ts_graph.data['ts'], 'ts')
+    
+        const res = this.ts_graph.data.data.status
+        this.winner = this.ts_graph.data.data.status.winner
+
+        //this.mae['VAR'] = (this.ts.ts_graph.data.data.status.VAR.mae === undefined) ? 'NA' : this.ts.ts_graph.data.data.status.VAR.mae ;
+        
+        this.metrics=[]
+        console.log('#####################Llega')
+        
+        if ('VAR' in this.ts_graph.data.data.status) {
+          console.log('entra en VAR')
+          var  dic_temp={}
+          dic_temp['VAR'] = this.ts_graph.data.data.status.VAR.mae
+          dic_temp['name']  = 'VAR'
+          dic_temp['mae'] = this.ts_graph.data.data.status.VAR.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.VAR.mse
+
+          this.metrics.push(dic_temp)
+          } 
+        if ('Holtwinters' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae
+          dic_temp['name']  = 'Holtwinters'
+          dic_temp['mae'] = this.ts_graph.data.data.status.Holtwinters.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.Holtwinters.mse
+
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('arima' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['arima'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'arima'
+          dic_temp['mae'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.arima.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('LSTM' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['LSTM'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'LSTM'
+          dic_temp['mae'] = this.ts_graph.data.data.status.LSTM.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.LSTM.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('fbprophet' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['fbprophet'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'fbprophet'
+          dic_temp['mae'] = this.ts_graph.data.data.status.fbprophet.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.fbprophet.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('gluonts' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['gluonts'] = this.ts_graph.data.data.status.arima.mae
+          dic_temp['name']  = 'gluonts'
+          dic_temp['mae'] = this.ts_graph.data.data.status.gluonts.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.gluonts.mse
+          this.metrics.push(dic_temp)
+
+          } 
+        
+        
+        //'Holtwinters' in this.ts_graph.data.data.status ? this.mae['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae : console.log('No Holtwinters')
+        //'arima' in this.ts_graph.data.data.status ? this.mae['arima'] = this.ts_graph.data.data.status.arima.mae : console.log('No Autoarima')
+        //'LSTM' in this.ts_graph.data.data.status ? this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae : console.log('No LSTM')
+        //'fbprophet' in this.ts_graph.data.data.status ? this.mae['fbprophet'] = this.ts_graph.data.data.status.fbprophet.mae : console.log('No fbprophet')
+        //'gluonts' in this.ts_graph.data.data.status ? this.mae['gluonts'] = this.ts_graph.data.data.status.gluonts.mae : console.log('No gluonts')
+
+
+        //this.mae['VAR'] = 
+        //this.mae['Holtwinters'] = this.ts.ts_graph.data.data.status.Holtwinters.mae
+        //this.mae['Autoarima'] = this.ts.ts_graph.data.data.status.Autoarima.mae
+        //this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae
+        //this.mae['VAR'] = this.ts_graph.data.data.status.VAR.mae
+        
+    
+        for (const key in res) {
+            // no deberia hacer esto :/
+            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
+                //tengo que añadir el debug y el futuro
+
+                var nombre_serie = key + '-debug'
+                series[nombre_serie] = this.addDebugEngine(res[key], key)
+                nombre_serie = key + '-future'
+                series[nombre_serie] = this.addFutureEngine(res[key], key)
+ 
+                }
+            }
+        var max_length = 0;
+        for (const ts in series){
+            var miserie=[]
+            var temp_serie=series[ts]
+            var keys = [];
+
+            for (var k in temp_serie) keys.push(k);
+        
+            var N = Math.max.apply(null, keys);
+            if (N> max_length){
+                max_length = N;
+                } 
+            //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
+            for (var i=0; i < N ; i++){
+                if (temp_serie[i] !== undefined ) {
+                    miserie.push(temp_serie[i]);
+                } else {
+                    miserie.push(null);
+                }
+            
+            }
+    
+
+            var test = {
+                label: ts,
+                fill: false,
+                //backgroundColor: this.getRandomColor(),
+                //pointBackgroundColor: 'blue',
+                borderWidth: 6,
+                //pointBorderColor: this.getRandomColor(),
+                borderColor: this.getRandomColor(),
+                pointRadius: 1,
+                data: miserie
+                };
+            if (ts != 'ts') {
+                test['borderDash'] = [15,5]
+                test['borderWidth'] = 2
+            }
+            console.log(test)
+            
+            this.datasets.push(test)
+            this.labels = Array.apply(null, {length:max_length}).map(Number.call, Number)
+            }
+        // overwrite
+        
+        console.log('new labels & datasets')
+        console.log(this.labels)
+        console.log(this.datasets)
+        this.datacollection= {
+            labels: this.labels,
+            datasets: this.datasets
+            }
+    },
+
       
     greet: function (event) {
       // `this` inside methods point to the Vue instance
@@ -467,10 +620,10 @@ export default {
             datasets: this.datasets
             }
 
-
         console.log('new datacollection')
         console.log(this.datacollection.labels)
         console.log(this.datacollection.datasets)
+        alert('nombre de la serie ' + temp_ts_graph.name)
         
     },
 
@@ -492,15 +645,15 @@ export default {
             console.log(e);
             });
         },
-    obtain_ts_by_name: async function () {
-        var v = this;
+    obtain_ts_by_name:  function () {
+        //var v = this;
 
         var ts_temp = {}
 
         alert (this.ts_grah_name)
         var datos_a_enviar = '{"collection_ts": "ts", "collection_timecop": "timecop", "url": "mongodb://webserver:webserver1@ds261570.mlab.com:61570/ts?retryWrites=false", "database": "ts", "name": "'+this.ts_grah_name +'" }'
         console.log ('datos a enviar' + datos_a_enviar)
-        await axios.post(this.timecop_url+'/result_document' , datos_a_enviar, {headers: {'content-type': 'application/json'}})
+         axios.post(this.timecop_url+'/result_document' , datos_a_enviar, {headers: {'content-type': 'application/json'}})
             .then((response) => {
                 //check if status is completed, if it is stop polling 
                 //if(response.data.chartName = 'completed') {
@@ -508,11 +661,12 @@ export default {
                 //}
                 
                 
-                v.ts_graph = response;
+                this.ts_graph = response;
                 alert('llega hasta aqui') 
                 
                 
-                ts_temp = response;
+                //ts_temp = response;
+                this.draw_TS()
             }).catch(e => {
                 console.log(e);
         });
