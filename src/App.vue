@@ -51,13 +51,7 @@
 
  
 
-      <v-flex xs3 offset-xs9 >
 
-        <v-btn light target="new" href="https://github.com/BBVA/timecop">
-          <img class="mr-2" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/github.svg" height="26px" alt="github">
-          <span>github</span>
-        </v-btn>
-      </v-flex>
     </v-toolbar>  
 
     <v-layout v-bind="binding"  row wrap>
@@ -66,11 +60,11 @@
 
             <v-simple-table>
               <thead >
-              <tr><th class="text-left">Algorithm</th><th class="text-left">mae</th><th class="text-left">mse</th></tr>
+              <tr><th class="text-left">Algorithm</th><th class="text-left">mae</th><th class="text-left">mse</th><th class="text-left">rmse</th></tr>
               </thead>
               <tbody>
                   <tr v-for="item in metrics" :key="item.name">
-                    <td>{{ item.name }}</td><td>    {{item.mae.toFixed(3)}}</td> <td>    {{item.mse.toFixed(3)}}</td>
+                    <td>{{ item.name }}</td><td>    {{item.mae.toFixed(3)}}</td> <td>    {{item.mse.toFixed(3)}}</td> <td>    {{item.rmse.toFixed(3)}}</td>
                 </tr>
               </tbody>
             </v-simple-table>     
@@ -243,6 +237,7 @@ export default {
           dic_temp['name']  = 'VAR'
           dic_temp['mae'] = this.ts_graph.data.data.status.VAR.mae
           dic_temp['mse'] = this.ts_graph.data.data.status.VAR.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.VAR.rmse
 
           this.metrics.push(dic_temp)
           } 
@@ -252,6 +247,7 @@ export default {
           dic_temp['name']  = 'Holtwinters'
           dic_temp['mae'] = this.ts_graph.data.data.status.Holtwinters.mae
           dic_temp['mse'] = this.ts_graph.data.data.status.Holtwinters.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.Holtwinters.rmse
 
           this.metrics.push(dic_temp)
 
@@ -262,6 +258,8 @@ export default {
           dic_temp['name']  = 'arima'
           dic_temp['mae'] = this.ts_graph.data.data.status.arima.mae
           dic_temp['mse'] = this.ts_graph.data.data.status.arima.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.arima.rmse
+
           this.metrics.push(dic_temp)
 
           } 
@@ -271,6 +269,8 @@ export default {
           dic_temp['name']  = 'LSTM'
           dic_temp['mae'] = this.ts_graph.data.data.status.LSTM.mae
           dic_temp['mse'] = this.ts_graph.data.data.status.LSTM.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.LSTM.rmse
+
           this.metrics.push(dic_temp)
 
           } 
@@ -280,6 +280,8 @@ export default {
           dic_temp['name']  = 'fbprophet'
           dic_temp['mae'] = this.ts_graph.data.data.status.fbprophet.mae
           dic_temp['mse'] = this.ts_graph.data.data.status.fbprophet.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.fbprophet.rmse
+
           this.metrics.push(dic_temp)
 
           } 
@@ -289,6 +291,8 @@ export default {
           dic_temp['name']  = 'gluonts'
           dic_temp['mae'] = this.ts_graph.data.data.status.gluonts.mae
           dic_temp['mse'] = this.ts_graph.data.data.status.gluonts.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.gluonts.rmse
+          
           this.metrics.push(dic_temp)
 
           } 
@@ -469,161 +473,6 @@ export default {
         console.log(temp_ts_graph)
 
 
-    
-        const main_ts = this.ts_graph.data
-        console.log(main_ts)
-        const series = {}
-        series['ts'] = this.addTS(this.ts_graph.data['ts'], 'ts')
-    
-        const res = this.ts_graph.data.data.status
-        this.winner = this.ts_graph.data.data.status.winner
-
-        //this.mae['VAR'] = (this.ts.ts_graph.data.data.status.VAR.mae === undefined) ? 'NA' : this.ts.ts_graph.data.data.status.VAR.mae ;
-        
-        this.metrics=[]
-        console.log('#####################Llega')
-        
-        if ('VAR' in this.ts_graph.data.data.status) {
-          console.log('entra en VAR')
-          var  dic_temp={}
-          dic_temp['VAR'] = this.ts_graph.data.data.status.VAR.mae
-          dic_temp['name']  = 'VAR'
-          dic_temp['mae'] = this.ts_graph.data.data.status.VAR.mae
-          dic_temp['mse'] = this.ts_graph.data.data.status.VAR.mse
-
-          this.metrics.push(dic_temp)
-          } 
-        if ('Holtwinters' in this.ts_graph.data.data.status) {
-          dic_temp={}
-          dic_temp['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae
-          dic_temp['name']  = 'Holtwinters'
-          dic_temp['mae'] = this.ts_graph.data.data.status.Holtwinters.mae
-          dic_temp['mse'] = this.ts_graph.data.data.status.Holtwinters.mse
-
-          this.metrics.push(dic_temp)
-
-          } 
-        if ('arima' in this.ts_graph.data.data.status) {
-          dic_temp={}
-          dic_temp['arima'] = this.ts_graph.data.data.status.arima.mae
-          dic_temp['name']  = 'arima'
-          dic_temp['mae'] = this.ts_graph.data.data.status.arima.mae
-          dic_temp['mse'] = this.ts_graph.data.data.status.arima.mse
-          this.metrics.push(dic_temp)
-
-          } 
-        if ('LSTM' in this.ts_graph.data.data.status) {
-          dic_temp={}
-          dic_temp['LSTM'] = this.ts_graph.data.data.status.arima.mae
-          dic_temp['name']  = 'LSTM'
-          dic_temp['mae'] = this.ts_graph.data.data.status.LSTM.mae
-          dic_temp['mse'] = this.ts_graph.data.data.status.LSTM.mse
-          this.metrics.push(dic_temp)
-
-          } 
-        if ('fbprophet' in this.ts_graph.data.data.status) {
-          dic_temp={}
-          dic_temp['fbprophet'] = this.ts_graph.data.data.status.arima.mae
-          dic_temp['name']  = 'fbprophet'
-          dic_temp['mae'] = this.ts_graph.data.data.status.fbprophet.mae
-          dic_temp['mse'] = this.ts_graph.data.data.status.fbprophet.mse
-          this.metrics.push(dic_temp)
-
-          } 
-        if ('gluonts' in this.ts_graph.data.data.status) {
-          dic_temp={}
-          dic_temp['gluonts'] = this.ts_graph.data.data.status.arima.mae
-          dic_temp['name']  = 'gluonts'
-          dic_temp['mae'] = this.ts_graph.data.data.status.gluonts.mae
-          dic_temp['mse'] = this.ts_graph.data.data.status.gluonts.mse
-          this.metrics.push(dic_temp)
-
-          } 
-        
-        
-        //'Holtwinters' in this.ts_graph.data.data.status ? this.mae['Holtwinters'] = this.ts_graph.data.data.status.Holtwinters.mae : console.log('No Holtwinters')
-        //'arima' in this.ts_graph.data.data.status ? this.mae['arima'] = this.ts_graph.data.data.status.arima.mae : console.log('No Autoarima')
-        //'LSTM' in this.ts_graph.data.data.status ? this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae : console.log('No LSTM')
-        //'fbprophet' in this.ts_graph.data.data.status ? this.mae['fbprophet'] = this.ts_graph.data.data.status.fbprophet.mae : console.log('No fbprophet')
-        //'gluonts' in this.ts_graph.data.data.status ? this.mae['gluonts'] = this.ts_graph.data.data.status.gluonts.mae : console.log('No gluonts')
-
-
-        //this.mae['VAR'] = 
-        //this.mae['Holtwinters'] = this.ts.ts_graph.data.data.status.Holtwinters.mae
-        //this.mae['Autoarima'] = this.ts.ts_graph.data.data.status.Autoarima.mae
-        //this.mae['LSTM'] = this.ts_graph.data.data.status.LSTM.mae
-        //this.mae['VAR'] = this.ts_graph.data.data.status.VAR.mae
-        
-    
-        for (const key in res) {
-            // no deberia hacer esto :/
-            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
-                //tengo que añadir el debug y el futuro
-
-                var nombre_serie = key + '-debug'
-                series[nombre_serie] = this.addDebugEngine(res[key], key)
-                nombre_serie = key + '-future'
-                series[nombre_serie] = this.addFutureEngine(res[key], key)
- 
-                }
-            }
-        var max_length = 0;
-        for (const ts in series){
-            var miserie=[]
-            var temp_serie=series[ts]
-            var keys = [];
-
-            for (var k in temp_serie) keys.push(k);
-        
-            var N = Math.max.apply(null, keys);
-            if (N> max_length){
-                max_length = N;
-                } 
-            //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
-            for (var i=0; i < N ; i++){
-                if (temp_serie[i] !== undefined ) {
-                    miserie.push(temp_serie[i]);
-                } else {
-                    miserie.push(null);
-                }
-            
-            }
-    
-
-            var test = {
-                label: ts,
-                fill: false,
-                //backgroundColor: this.getRandomColor(),
-                //pointBackgroundColor: 'blue',
-                borderWidth: 6,
-                //pointBorderColor: this.getRandomColor(),
-                borderColor: this.getRandomColor(),
-                pointRadius: 1,
-                data: miserie
-                };
-            if (ts != 'ts') {
-                test['borderDash'] = [15,5]
-                test['borderWidth'] = 2
-            }
-            console.log(test)
-            
-            this.datasets.push(test)
-            this.labels = Array.apply(null, {length:max_length}).map(Number.call, Number)
-            }
-        // overwrite
-        
-        console.log('new labels & datasets')
-        console.log(this.labels)
-        console.log(this.datasets)
-        this.datacollection= {
-            labels: this.labels,
-            datasets: this.datasets
-            }
-
-        console.log('new datacollection')
-        console.log(this.datacollection.labels)
-        console.log(this.datacollection.datasets)
-        alert('nombre de la serie ' + temp_ts_graph.name)
         
     },
 
