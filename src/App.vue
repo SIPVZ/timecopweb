@@ -218,7 +218,7 @@ export default {
         draw_TS: function () {
         const main_ts = this.ts_graph.data
         console.log(main_ts)
-        alert('esta es la serie que dibujo ' + main_ts.name)
+        //alert('esta es la serie que dibujo ' + main_ts.name)
         const series = {}
         series['ts'] = this.addTS(this.ts_graph.data['ts'], 'ts')
     
@@ -499,7 +499,7 @@ export default {
 
         var ts_temp = {}
 
-        alert (this.ts_grah_name)
+        //alert (this.ts_grah_name)
         var datos_a_enviar = '{"collection_ts": "ts", "collection_timecop": "timecop", "url": "mongodb://webserver:webserver1@ds261570.mlab.com:61570/ts?retryWrites=false", "database": "ts", "name": "'+this.ts_grah_name +'" }'
         console.log ('datos a enviar' + datos_a_enviar)
          axios.post(this.timecop_url+'/result_document' , datos_a_enviar, {headers: {'content-type': 'application/json'}})
@@ -511,7 +511,6 @@ export default {
                 
                 
                 this.ts_graph = response;
-                alert('llega hasta aqui') 
                 
                 
                 //ts_temp = response;
@@ -629,7 +628,6 @@ export default {
 	},
 
     obtain_data: function () {
-        alert(event.target.tagName)
         var temp_ts_graph = this.obtain_ts_by_name()
         console.log(temp_ts_graph)
 
