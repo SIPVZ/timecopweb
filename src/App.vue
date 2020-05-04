@@ -30,6 +30,13 @@
                 </v-col>
                 
               </v-row>
+               <v-row>
+                
+                <v-col cols="12">
+                  <v-text-field label="URL for mongodb backend " v-model="mongodb_url" required></v-text-field>
+                </v-col>
+                
+              </v-row>
             </v-container>
             <small>*indicates required field</small>
           </v-card-text>
@@ -257,6 +264,7 @@ export default {
       },
 
   data: () => ({
+    mongodb_url: '',
     pollInterval: 20000,
     pool_url: '',
     task_info_status: {},
@@ -845,7 +853,10 @@ export default {
 
     ts_list: function () {
         var v = this;
-        var datos_a_enviar = '{"collection": "timecop",  "url": "mongodb://webserver:webserver1@ds261570.mlab.com:61570/ts?retryWrites=false", "database": "ts" }'
+        var datos_a_enviar = {}
+        datos_a_enviar['collection'] = "timecop"
+        datos_a_enviar['url'] = this.mongodb_url
+        datos_a_enviar['database'] = 'ts'
 
             axios.post(this.timecop_url+'/result_list', datos_a_enviar, {headers: {'content-type': 'application/json'}})
                 .then((response) => {
@@ -864,8 +875,12 @@ export default {
         //var v = this;
 
         var ts_temp = {}
-
-        var datos_a_enviar = '{"collection_ts": "ts", "collection_timecop": "timecop", "url": "mongodb://webserver:webserver1@ds261570.mlab.com:61570/ts?retryWrites=false", "database": "ts", "name": "'+this.ts_grah_name +'" }'
+        var datos_a_enviar = {}
+        datos_a_enviar['collection_ts'] = "ts"
+        datos_a_enviar['collection_timecop'] = "timecop"
+        datos_a_enviar['url'] = this.mongodb_url
+        datos_a_enviar['database'] = 'ts'
+        datos_a_enviar['name'] = this.ts_grah_name
         console.log ('datos a enviar' + datos_a_enviar)
          axios.post(this.timecop_url+'/result_document' , datos_a_enviar, {headers: {'content-type': 'application/json'}})
             .then((response) => {
