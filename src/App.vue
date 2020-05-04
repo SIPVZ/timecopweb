@@ -42,6 +42,87 @@
       </v-dialog>
       </v-flex>
 
+      <v-flex>
+      <v-dialog v-model="dialog2" persistent max-width="600px">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark v-on="on">Consult in realtime</v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="headline">Timecop CSV Data</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                
+                <v-col cols="12">
+                  <v-text-field label="Server" v-model="timecop_url" required></v-text-field>
+                </v-col>
+                
+              </v-row>
+              <v-row>
+                
+                <v-col cols="12">
+                  <v-text-field label="Timeseries Name" v-model="ts_data_name" required></v-text-field>
+                </v-col>
+                
+              </v-row>
+              <v-row>
+                
+                <v-col cols="12">
+                  <v-text-field label="Data" v-model="ts_data_data" required></v-text-field>
+                </v-col>
+                
+              </v-row>
+              <v-row>
+                
+                <v-col cols="12">
+                  <v-text-field label="Num Futures" v-model="ts_data_num_fut" required></v-text-field>
+                </v-col>
+                
+              </v-row>
+              <v-row>
+                
+                <v-col cols="12">
+                  <v-text-field label="Desv mse" v-model="ts_data_desv_mse" required></v-text-field>
+                </v-col>
+                
+              </v-row>
+               <v-row>
+                
+                <v-col cols="12">
+                  Train: 
+                  <v-checkbox
+                      v-model="ts_data_train"
+                      :label="Train"
+                      ></v-checkbox>
+                </v-col>
+                
+              </v-row>
+              
+               <v-row>
+                
+                <v-col cols="12">
+                  Restart: <v-checkbox
+                      v-model="ts_data_restart"
+                      :label="Restart"
+                      ></v-checkbox>
+                </v-col>
+
+              </v-row>
+            </v-container>
+            <small>*indicates required field</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog2 = false">Close</v-btn>
+            <v-btn color="blue darken-1" text @click="timecop_realtime($event); dialog2 = false">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      </v-flex>
+
+
       <v-flex xs3 offset-xs9 >
 
         <v-btn light target="new" >
@@ -176,9 +257,21 @@ export default {
       },
 
   data: () => ({
+    pollInterval: 20000,
+    pool_url: '',
+    task_info_status: {},
+    task_id: '',
+    ts_data_sent: {},
+    ts_data_name: '',
+    ts_data_num_fut: 5,
+    ts_data_desv_mse: 2,
+    ts_data_restart: true,
+    ts_data_train: true,
+    ts_data_data: [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345],
     metrics: [],
     dialog_json: false,
     dialog: true,
+    dialog2: false,
     response: {},
     selected_ready: false,
     toggleDataVisibility: true,
@@ -218,7 +311,6 @@ export default {
         draw_TS: function () {
         const main_ts = this.ts_graph.data
         console.log(main_ts)
-        //alert('esta es la serie que dibujo ' + main_ts.name)
         const series = {}
         series['ts'] = this.addTS(this.ts_graph.data['ts'], 'ts')
     
@@ -378,13 +470,290 @@ export default {
             }
     },
 
-      
-    greet: function (event) {
-      // `this` inside methods point to the Vue instance
+
+    draw_realtime_TS: function () {
+        const main_ts = this.task_info_status.data
+        console.log(main_ts)
+
+        this.labels=[]
+        this.datasets=[]
+        //alert('esta es la serie que dibujo ' + main_ts.name)
+        const series = {}
+ 
+        //series['ts'] = this.addTS(this.task_info_status.ts, 'ts')
+        var serie_temp = {}
+        var indice = 0
+        var iterador = this.task_info_status.ts.values();
+
+        for (let valor of iterador) {
+            indice = indice + 1
+            serie_temp[indice] = valor
+          }
+        series['ts']=serie_temp
+        
+        console.log("TSSSSSSSSSSSSSSSS")
+        console.log(series['ts'])
+        const res = this.task_info_status.status
+        this.winner = this.task_info_status.status.winner
+
+        //this.mae['VAR'] = (this.ts.ts_graph.data.data.status.VAR.mae === undefined) ? 'NA' : this.ts.ts_graph.data.data.status.VAR.mae ;
+        
+        this.metrics=[]
+        console.log('#####################Llega')
+        console.log(this.task_info_status.status)
+        
+        if ('VAR' in this.task_info_status.status) {
+          console.log('entra en VAR')
+          var  dic_temp={}
+          dic_temp['VAR'] = res.VAR.mae
+          dic_temp['name']  = 'VAR'
+          dic_temp['mae'] = res.VAR.mae
+          dic_temp['mse'] = res.VAR.mse
+          dic_temp['rmse'] = res.VAR.rmse
+
+          this.metrics.push(dic_temp)
+          } 
+        if ('Holtwinters' in res) {
+          dic_temp={}
+          dic_temp['Holtwinters'] = res.Holtwinters.mae
+          dic_temp['name']  = 'Holtwinters'
+          dic_temp['mae'] = res.Holtwinters.mae
+          dic_temp['mse'] = res.Holtwinters.mse
+          dic_temp['rmse'] = res.Holtwinters.rmse
+
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('arima' in res) {
+          dic_temp={}
+          dic_temp['arima'] = res.arima.mae
+          dic_temp['name']  = 'arima'
+          dic_temp['mae'] = res.arima.mae
+          dic_temp['mse'] = res.arima.mse
+          dic_temp['rmse'] = res.arima.rmse
+
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('LSTM' in res) {
+          dic_temp={}
+          dic_temp['LSTM'] = res.LSTM.mae
+          dic_temp['name']  = 'LSTM'
+          dic_temp['mae'] = res.LSTM.mae
+          dic_temp['mse'] = res.LSTM.mse
+          dic_temp['rmse'] = res.LSTM.rmse
+
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('fbprophet' in res) {
+          dic_temp={}
+          dic_temp['fbprophet'] = res.fbprophet.mae
+          dic_temp['name']  = 'fbprophet'
+          dic_temp['mae'] = res.fbprophet.mae
+          dic_temp['mse'] = res.fbprophet.mse
+          dic_temp['rmse'] = res.fbprophet.rmse
+
+          this.metrics.push(dic_temp)
+
+          } 
+        if ('gluonts' in res) {
+          dic_temp={}
+          dic_temp['gluonts'] = res.gluonts.mae
+          dic_temp['name']  = 'gluonts'
+          dic_temp['mae'] = res.gluonts.mae
+          dic_temp['mse'] = res.gluonts.mse
+          dic_temp['rmse'] = res.gluonts.rmse
+          
+          this.metrics.push(dic_temp)
+
+          }         
+    
+        for (const key in res) {
+            // no deberia hacer esto :/
+            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
+                //tengo que añadir el debug y el futuro
+
+                var nombre_serie = key + '-debug'
+                series[nombre_serie] = this.addDebugEngine(res[key], key)
+                nombre_serie = key + '-future'
+                series[nombre_serie] = this.addFutureEngine(res[key], key)
+                }
+            }
+        var max_length = 0;
+        console.log ('######################series a pintar')
+        console.log(series)
+        for (const ts in series){
+            var miserie=[]
+            var temp_serie=series[ts]
+            var keys = [];
+
+            for (var k in temp_serie) keys.push(k);
+        
+            var N = Math.max.apply(null, keys);
+            if (N> max_length){
+                max_length = N;
+                } 
+            //var valorx = Array.apply(null, {length: N}).map(Number.call, Number)
+            for (var i=0; i < N ; i++){
+                if (temp_serie[i] !== undefined ) {
+                    miserie.push(temp_serie[i]);
+                } else {
+                    miserie.push(null);
+                }
+            
+            }
+    
+
+            var test = {
+                label: ts,
+                fill: false,
+                //backgroundColor: this.getRandomColor(),
+                //pointBackgroundColor: 'blue',
+                borderWidth: 6,
+                //pointBorderColor: this.getRandomColor(),
+                borderColor: this.getRandomColor(),
+                pointRadius: 1,
+                data: miserie
+                };
+            if (ts != 'ts') {
+                test['borderDash'] = [15,5]
+                test['borderWidth'] = 2
+            }
+            console.log(test)
+            
+            this.datasets.push(test)
+            this.labels = Array.apply(null, {length:max_length}).map(Number.call, Number)
+            }
+        // overwrite
+        
+        console.log('new labels & datasets')
+        console.log(this.labels)
+        console.log(this.datasets)
+        this.datacollection= {
+            labels: this.labels,
+            datasets: this.datasets
+            }
+    },
+
+    timecop_realtime: function (event) {
+
+      // Tenemos que enviar primero los datos para conseguir un ID y luego el pool para saber el estado de la ocnsulta
       this.datasets=[]
       //alert('Hello ' + event + '!')
       // `event` is the native DOM event
       //alert(event.target.tagName)
+      console.log(event.target.tagName)
+      
+      this.ts_data_sent['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
+      this.ts_data_sent['name'] = this.ts_data_name
+      this.ts_data_sent['num_future'] = this.ts_data_num_fut
+      this.ts_data_sent['desv_metric'] = this.ts_data_desv_mse
+      this.ts_data_sent['train'] = this.ts_data_train
+      this.ts_data_sent['restart'] = this.ts_data_restart
+
+
+      axios.post(this.timecop_url+'/back_univariate', this.ts_data_sent, {headers: {'content-type': 'application/json'}})
+                .then((response) => {
+                    //check if status is completed, if it is stop polling 
+                    //if(response.data.chartName = 'completed') {
+                    //     clearInterval(this.pollInterval); //won't be polled anymore 
+                    //}
+                    
+                    console.log(response.data)
+                    this.task_id = response.data.task_id; 
+                    this.check_task_status()
+                }).catch(e => {
+            console.log(e);
+            });
+
+      //this.query_data()
+      //this.formatData()
+      this.selected_ready=true
+      },
+    
+    check_task_status: function () {
+      var v = this;
+      var interval = setInterval(function () {
+        v.pool_url = v.timecop_url + '/back_univariate_status/'+ v.task_id
+        //axios.get(this.timecop_url+'/back_univariate_status/'+ this.task_id)
+        axios.get(v.pool_url)
+        .then((response) => {
+            //check if status is completed, if it is stop polling
+            if(response.data.state == 'SUCCESS') {
+                 clearInterval(interval); //won't be polled anymore 
+            }
+            console.log('respuesta ok')
+            console.log(response.data.status)
+            v.task_info_status['status'] = response.data.status;
+            v.task_info_status['ts'] = v.ts_data_data 
+            //v.ts_graph = response;
+                
+                
+                //ts_temp = response;
+            v.draw_realtime_TS()
+         })
+      }, this.pollInterval);
+    },
+    formatData () {
+
+        const d = this.parametersDialog.data
+        let dToSent = {}
+        if (d.length > 0) {
+          if (d.length === 1) {
+            dToSent.data = d[0].data
+          } else {
+            dToSent.main = d[0].data
+            dToSent.timeseries = []
+            d.map((v, i) => {
+              if (i > 1) dToSent.timeseries.push(v)
+            })
+          }
+          this.parametersList.map(v => {
+            if (v.value !== '') {
+              dToSent[v.key] = v.value
+            }
+          })
+          this.dataToProcess = JSON.stringify(dToSent)
+          this.resetParametersDialog()
+          this.getUrlToken()
+         }
+    },
+    getUrlToken () {
+      this.$emit('reset')
+      this.loading = true
+      this.$http.post(this.url, this.dataSet).then(response => {
+        const newUrl = `${this.url}_status/${response.body.task_id}`
+        const interval = setInterval(() => {
+          if (this.state === 'SUCCESS' || this.state === 'ERROR') {
+            this.loading = false
+            this.state = ''
+            clearInterval(interval)
+          } else {
+            this.getUrl(newUrl)
+          }
+        }, 2000)
+      })
+    },
+    getUrl (url) {
+      this.$http.get(url).then(response => {
+        console.log(response.body)
+        this.state = response.body.state
+        const r = response.body.response || response.body.status
+        this.$emit('response', {dataToProcess: this.dataSet, result: r})
+      }).catch(err => {
+        this.loading = false
+        this.errorDialog.value = true
+        this.errorDialog.text = err
+        console.log(err)
+        this.state = 'ERROR'
+      })
+    },
+      
+    greet: function (event) {
+      // `this` inside methods point to the Vue instance
+      this.datasets=[]
+      // `event` is the native DOM event
       console.log(event.target.tagName)
       this.ts_list()
 
@@ -468,11 +837,8 @@ export default {
       changeTS: function(rowId, event) {
         this.datasets=[]
         this.ts_grah_name= event.target.value
-        //alert(event.target.value)
         var temp_ts_graph =  this.obtain_ts_by_name()
         console.log(temp_ts_graph)
-
-
         
     },
 
@@ -499,7 +865,6 @@ export default {
 
         var ts_temp = {}
 
-        //alert (this.ts_grah_name)
         var datos_a_enviar = '{"collection_ts": "ts", "collection_timecop": "timecop", "url": "mongodb://webserver:webserver1@ds261570.mlab.com:61570/ts?retryWrites=false", "database": "ts", "name": "'+this.ts_grah_name +'" }'
         console.log ('datos a enviar' + datos_a_enviar)
          axios.post(this.timecop_url+'/result_document' , datos_a_enviar, {headers: {'content-type': 'application/json'}})
@@ -523,19 +888,6 @@ export default {
     },
     
 
-    pool_exec: function () {
-      var v = this;
-      setInterval(function () {
-        axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-        .then((response) => {
-            //check if status is completed, if it is stop polling 
-            //if(response.data.chartName = 'completed') {
-            //     clearInterval(this.pollInterval); //won't be polled anymore 
-            //}
-            v.info = response; 
-         })
-    }, 2000);
-   },
 
     testFunction: function () {
       var v = this;
@@ -558,7 +910,7 @@ export default {
         var ts = {}
         console.log(name)
         Array.from(engine.debug).forEach(el => {
-                ts[el['step']]=(el['expected value']);
+                ts[el['step']]=(el['expected value'] || el['value']);
                 });
         return ts;
     },
