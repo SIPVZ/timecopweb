@@ -15,7 +15,7 @@
       <v-flex>
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark v-on="on">Set Timecop server</v-btn>
+          <v-btn color="primary" dark v-on="on">Timecop server library</v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -52,7 +52,7 @@
       <v-flex>
       <v-dialog v-model="dialog2" persistent max-width="600px">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark v-on="on">Consult in realtime</v-btn>
+          <v-btn color="primary" dark v-on="on">Realtime training</v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -130,7 +130,7 @@
       </v-flex>
 
 
-      <v-flex xs3 offset-xs9 >
+      <v-flex xs3  >
 
         <v-btn light target="new" >
           Timecop URL:<input v-model="timecop_url" placeholder="Timecop Server">
