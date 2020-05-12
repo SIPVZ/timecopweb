@@ -88,7 +88,6 @@
                 
               </v-row>
                
-              
               <v-row v-if="multivariate">
 
               <div
@@ -106,7 +105,6 @@
               <v-btn v-if="multivariate" @click="add" class="primary">add</v-btn>  
 
               </v-row> 
-              
 
               <v-row>
                 <v-col cols="12">
@@ -692,28 +690,15 @@ export default {
       //alert(event.target.tagName)
       console.log(event.target.tagName)
       
-      if (this.multivariate_text == 'univariate') {
-        this.ts_data_sent['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
-        this.ts_data_sent['name'] = this.ts_data_name
-        this.ts_data_sent['restart'] = this.ts_data_restart
-
-        }
-      else {
-        this.ts_data_sent['main'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
-        this.ts_data_sent['timeseries'] = []
-        var temporal_ts = {}
-        temporal_ts['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345] 
-        this.ts_data_sent.timeseries.push(temporal_ts)
-        var temporal2_ts = {}
-        temporal2_ts['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345] 
-        this.ts_data_sent.timeseries.push(temporal2_ts)
-      }
+      this.ts_data_sent['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
+      this.ts_data_sent['name'] = this.ts_data_name
       this.ts_data_sent['num_future'] = this.ts_data_num_fut
       this.ts_data_sent['desv_metric'] = this.ts_data_desv_mse
       this.ts_data_sent['train'] = this.ts_data_train
-      
+      this.ts_data_sent['restart'] = this.ts_data_restart
 
-      axios.post(this.timecop_url+'/back_'+ this.multivariate_text, this.ts_data_sent, {headers: {'content-type': 'application/json'}})
+
+      axios.post(this.timecop_url+'/back_univariate', this.ts_data_sent, {headers: {'content-type': 'application/json'}})
                 .then((response) => {
                     //check if status is completed, if it is stop polling 
                     //if(response.data.chartName = 'completed') {
@@ -735,7 +720,7 @@ export default {
     check_task_status: function () {
       var v = this;
       var interval = setInterval(function () {
-        v.pool_url = v.timecop_url + '/back_' + v.multivariate_text+ '_status/'+ v.task_id
+        v.pool_url = v.timecop_url + '/back_univariate_status/'+ v.task_id
         //axios.get(this.timecop_url+'/back_univariate_status/'+ this.task_id)
         axios.get(v.pool_url)
         .then((response) => {
