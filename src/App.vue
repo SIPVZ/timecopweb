@@ -43,7 +43,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-            <v-btn color="blue darken-1" text @click="greet($event); dialog = false">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="greet($event); dialog = false">Launch</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -96,10 +96,15 @@
                 :key="i"
                 class="text-fields-row"
               >
-                
-                <v-col cols="12">
-                  <v-text-field label="Secondary TS" v-model="ts_data_data" required></v-text-field>
-                </v-col>
+                <v-text-field
+                  :label="textField.label1"
+                  v-model="textField.value1"
+                ></v-text-field>
+      
+                <v-text-field
+                  :label="textField.label2"
+                  v-model="textField.value2"
+                ></v-text-field>
                 
               </div>
 
@@ -140,12 +145,13 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialog2 = false">Close</v-btn>
-            <v-btn color="blue darken-1" text @click="dialog2 = false; timecop_realtime($event) ">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="dialog2 = false; timecop_realtime($event) ">Launch</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       </v-flex>
 
+      <v-spacer></v-spacer>
 
       <v-flex xs3  >
 
@@ -177,7 +183,16 @@
 
         <v-flex  d-flex xs12 sm12 md9>
           <v-layout row wrap justify-center>
+            <v-flex v-if="realtime"  xs1>
+                <v-progress-circular
+                  :size="90"
+                  color="primary"
+                  indeterminate
+                ></v-progress-circular>
+            </v-flex>
+
             <v-flex v-if="selected_ready"  xs6>
+
                <v-card dark color="secondary" class="justify-center">
                  <v-card-title primary-title class="justify-center">
 
@@ -198,11 +213,16 @@
             <v-card dark color="primary">
             <v-card-text v-if="selected_ready">Select Time series to visualize</v-card-text>
           </v-card>
-            <select  v-if="selected_ready" v-model="ts_selected"  v-on:change="changeTS(rowId, $event)"  filled label="Filled style">
-              <option v-for="user in info.data" :key="user.name"  v-bind:value="user.name">
-                {{user.name}}
-              </option>
-            </select>
+            <v-select 
+              v-model="ts_grah_name"
+              :items="info.data"
+              item-value="name"
+              item-text="name"
+              filled
+              label="Select the timeseries"
+              v-on:change="changeTS(name,$event)">
+            </v-select>
+
           </v-card>
             </v-flex>
 
@@ -281,6 +301,7 @@ export default {
       },
 
   data: () => ({
+    realtime: false,
     textFields: [],
     multivariate_text: "univariate",
     multivariate: false,
@@ -295,7 +316,7 @@ export default {
     ts_data_desv_mse: 2,
     ts_data_restart: true,
     ts_data_train: true,
-    ts_data_data: [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345],
+    ts_data_data: "27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345",
     metrics: [],
     dialog_json: false,
     dialog: true,
@@ -349,9 +370,9 @@ export default {
 
         add () {
           this.textFields.push({ 
-            label1: "foo", 
+            label1: "Secondary TS Name", 
             value1: "",
-            label2: "bar",
+            label2: "Secondary TS Values",
             value2: ""
           })
         },
@@ -521,11 +542,31 @@ export default {
     draw_realtime_TS: function () {
         const main_ts = this.task_info_status.data
         console.log(main_ts)
-
+        var v = this;
         this.labels=[]
         this.datasets=[]
         //alert('esta es la serie que dibujo ' + main_ts.name)
         const series = {}
+
+
+        // incluyo las series del multivariate
+        if (v.multivariate_text === 'multivariate') {
+               
+              v.textFields.forEach( function(item, index) {
+                  //console.log("En el índice " + item + " hay este valor: " + index);
+                  console.log(index)
+                  v.task_info_status[item.value1] = item.value2.split(",").map(Number)
+                  var serie_temp = {}
+                  var indice = 0
+                  var iterador = item.value2.split(",").map(Number)
+                  for (let valor of iterador) {
+                    indice = indice + 1
+                    serie_temp[indice] = valor
+                    }
+                  series[item.value1]=serie_temp
+                  }); 
+        }
+
  
         //series['ts'] = this.addTS(this.task_info_status.ts, 'ts')
         var serie_temp = {}
@@ -685,6 +726,8 @@ export default {
 
     timecop_realtime: function (event) {
 
+      this.realtime=true
+
       // Tenemos que enviar primero los datos para conseguir un ID y luego el pool para saber el estado de la ocnsulta
       this.datasets=[]
       //alert('Hello ' + event + '!')
@@ -693,13 +736,17 @@ export default {
       console.log(event.target.tagName)
       
       if (this.multivariate_text == 'univariate') {
-        this.ts_data_sent['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
+        //alert (this.ts_data_data)
+        this.ts_data_sent['data'] = this.ts_data_data.split(",").map(Number)
+        //this.ts_data_sent['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
         this.ts_data_sent['name'] = this.ts_data_name
         this.ts_data_sent['restart'] = this.ts_data_restart
 
         }
       else {
-        this.ts_data_sent['main'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
+        //this.ts_data_sent['main'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
+        this.ts_data_sent['main'] = this.ts_data_data.split(",").map(Number)
+
         this.ts_data_sent['timeseries'] = []
         var temporal_ts = {}
         temporal_ts['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345] 
@@ -734,6 +781,7 @@ export default {
     
     check_task_status: function () {
       var v = this;
+      v.realtime = true
       var interval = setInterval(function () {
         v.pool_url = v.timecop_url + '/back_' + v.multivariate_text+ '_status/'+ v.task_id
         //axios.get(this.timecop_url+'/back_univariate_status/'+ this.task_id)
@@ -742,11 +790,33 @@ export default {
             //check if status is completed, if it is stop polling
             if(response.data.state == 'SUCCESS') {
                  clearInterval(interval); //won't be polled anymore 
+                 v.realtime=false
+
             }
             console.log('respuesta ok')
             console.log(response.data.status)
             v.task_info_status['status'] = response.data.status;
-            v.task_info_status['ts'] = v.ts_data_data 
+            v.task_info_status['ts'] = v.ts_data_data.split(",").map(Number)
+            //alert("no entra en multivariate")
+            if (v.multivariate_text === 'multivariate') {
+               //var contador = 1
+               //alert("entra en multivariate")
+               //console.log(v.textFields)
+               //alert(v.textFields)
+               
+              v.textFields.forEach( function(item, index) {
+                  //console.log("En el índice " + item + " hay este valor: " + index);
+                  console.log(index)
+                  v.task_info_status[item.value1] = item.value2.split(",").map(Number)
+                  }); 
+
+              //  for (textField in v.textFields) {
+              //    alert (textField + i )
+              //    if ( textField == 'value2')
+              //     var nombre = 'ts_' + contador.toString()
+              //     v.task_info_status[nombre] = textField.split(",").map(Number)
+              //  }
+            }
             //v.ts_graph = response;
                 
                 
@@ -894,9 +964,10 @@ export default {
 
       },
 
-      changeTS: function(rowId, event) {
+      changeTS: function() {
         this.datasets=[]
-        this.ts_grah_name= event.target.value
+        //this.ts_grah_name= event.target.value
+        //alert(this.ts_grah_name)
         var temp_ts_graph =  this.obtain_ts_by_name()
         console.log(temp_ts_graph)
         
