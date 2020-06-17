@@ -339,7 +339,7 @@ export default {
         
         ts_grah_name : "Real estate loans  billions   monthly  Jan 1973 Oct 1978",
 
-        timecop_url: "Timecop Web server", 
+        timecop_url: "", 
         test: null,
         Forecast,
         labels: null,
@@ -433,6 +433,17 @@ export default {
 
           this.metrics.push(dic_temp)
 
+          }
+        if ('nbeats' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['nbeats'] = this.ts_graph.data.data.status.nbeats.mae
+          dic_temp['name']  = 'nbeats'
+          dic_temp['mae'] = this.ts_graph.data.data.status.nbeats.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.nbeats.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.nbeats.rmse
+
+          this.metrics.push(dic_temp)
+
           } 
         if ('fbprophet' in this.ts_graph.data.data.status) {
           dic_temp={}
@@ -474,7 +485,7 @@ export default {
     
         for (const key in res) {
             // no deberia hacer esto :/
-            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
+            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats') {
                 //tengo que añadir el debug y el futuro
 
                 var nombre_serie = key + '-debug'
@@ -571,8 +582,8 @@ export default {
         //series['ts'] = this.addTS(this.task_info_status.ts, 'ts')
         var serie_temp = {}
         var indice = 0
-        var iterador = this.task_info_status.ts.values();
-
+        //var iterador = this.task_info_status.ts.values();
+        var iterador = this.ts_data_data.split(",").map(Number)
         for (let valor of iterador) {
             indice = indice + 1
             serie_temp[indice] = valor
@@ -634,6 +645,17 @@ export default {
           this.metrics.push(dic_temp)
 
           } 
+        if ('nbeats' in res) {
+          dic_temp={}
+          dic_temp['nbeats'] = res.nbeats.mae
+          dic_temp['name']  = 'nbeats'
+          dic_temp['mae'] = res.nbeats.mae
+          dic_temp['mse'] = res.nbeats.mse
+          dic_temp['rmse'] = res.nbeats.rmse
+
+          this.metrics.push(dic_temp)
+
+          } 
         if ('fbprophet' in res) {
           dic_temp={}
           dic_temp['fbprophet'] = res.fbprophet.mae
@@ -659,7 +681,7 @@ export default {
     
         for (const key in res) {
             // no deberia hacer esto :/
-            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
+            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats') {
                 //tengo que añadir el debug y el futuro
 
                 var nombre_serie = key + '-debug'
@@ -1132,7 +1154,7 @@ export default {
     
     for (const key in res) {
         // no deberia hacer esto :/
-        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts') {
+        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats') {
             //tengo que añadir el debug y el futuro
 
             var nombre_serie = key + '-debug'
