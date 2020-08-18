@@ -256,12 +256,6 @@
 
              </v-flex>
 
-
-
-
-
-            
-            
             
           </v-layout>
         </v-flex>
@@ -434,6 +428,17 @@ export default {
           this.metrics.push(dic_temp)
 
           }
+        if ('tcn' in this.ts_graph.data.data.status) {
+          dic_temp={}
+          dic_temp['tcn'] = this.ts_graph.data.data.status.tcn.mae
+          dic_temp['name']  = 'tcn'
+          dic_temp['mae'] = this.ts_graph.data.data.status.tcn.mae
+          dic_temp['mse'] = this.ts_graph.data.data.status.tcn.mse
+          dic_temp['rmse'] = this.ts_graph.data.data.status.tcn.rmse
+
+          this.metrics.push(dic_temp)
+
+          } 
         if ('nbeats' in this.ts_graph.data.data.status) {
           dic_temp={}
           dic_temp['nbeats'] = this.ts_graph.data.data.status.nbeats.mae
@@ -485,7 +490,7 @@ export default {
     
         for (const key in res) {
             // no deberia hacer esto :/
-            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats') {
+            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats' || key == 'tcn') {
                 //tengo que añadir el debug y el futuro
 
                 var nombre_serie = key + '-debug'
@@ -645,6 +650,17 @@ export default {
           this.metrics.push(dic_temp)
 
           } 
+        if ('tcn' in res) {
+          dic_temp={}
+          dic_temp['tcn'] = res.tcn.mae
+          dic_temp['name']  = 'tcn'
+          dic_temp['mae'] = res.tcn.mae
+          dic_temp['mse'] = res.tcn.mse
+          dic_temp['rmse'] = res.tcn.rmse
+
+          this.metrics.push(dic_temp)
+
+          } 
         if ('nbeats' in res) {
           dic_temp={}
           dic_temp['nbeats'] = res.nbeats.mae
@@ -681,7 +697,7 @@ export default {
     
         for (const key in res) {
             // no deberia hacer esto :/
-            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats') {
+            if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats' || key == 'tcn') {
                 //tengo que añadir el debug y el futuro
 
                 var nombre_serie = key + '-debug'
@@ -767,11 +783,14 @@ export default {
         }
       else {
         //this.ts_data_sent['main'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345]
+        this.ts_data_sent['restart'] = this.ts_data_restart
         this.ts_data_sent['main'] = this.ts_data_data.split(",").map(Number)
+        this.ts_data_sent['name'] = this.ts_data_name
 
         this.ts_data_sent['timeseries'] = []
         var temporal_ts = {}
         temporal_ts['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345] 
+        
         this.ts_data_sent.timeseries.push(temporal_ts)
         var temporal2_ts = {}
         temporal2_ts['data'] = [27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345] 
@@ -1154,7 +1173,7 @@ export default {
     
     for (const key in res) {
         // no deberia hacer esto :/
-        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats') {
+        if (key === 'Holtwinters' || key === 'LSTM' || key === 'VAR' || key === 'arima' || key == 'fbprophet' || key == 'gluonts' || key == 'nbeats' || key == 'tcn') {
             //tengo que añadir el debug y el futuro
 
             var nombre_serie = key + '-debug'
