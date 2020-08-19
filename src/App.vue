@@ -5,7 +5,7 @@
 
     <v-toolbar dense app>
       <img v-if="!dark" src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo.svg" height="70%" class="pa-1" alt="Time Cop">
-      <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/master/static/static/img/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
+      <img v-else src="https://raw.githubusercontent.com/SIPVZ/timecop/develop/static/logo_dark.svg" height="70%" class="pa-1" alt="Time Cop">
 
 
 
@@ -313,7 +313,7 @@ export default {
     ts_data_data: "27566, 27621, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345, 25696, 21653, 21197, 21620, 25596, 28327, 29892, 28206, 28718, 44288, 29219,23345",
     metrics: [],
     dialog_json: false,
-    dialog: true,
+    dialog: false,
     dialog2: false,
     response: {},
     selected_ready: false,
@@ -1019,7 +1019,10 @@ export default {
         var v = this;
         var datos_a_enviar = {}
         datos_a_enviar['collection'] = "timecop"
-        datos_a_enviar['url'] = this.mongodb_url
+        if (this.mongodb_url != '') {
+          datos_a_enviar['url'] = this.mongodb_url
+        }
+          
         datos_a_enviar['database'] = 'ts'
 
             axios.post(this.timecop_url+'/result_list', datos_a_enviar, {headers: {'content-type': 'application/json'}})
@@ -1245,6 +1248,8 @@ export default {
 
   mounted () {
     this.$vuetify.theme.dark = true
+    this.timecop_url = window.location.protocol + '//' + window.location.hostname + '/'
+    this.ts_list()
 
   },
   
