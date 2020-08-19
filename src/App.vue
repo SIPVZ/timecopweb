@@ -1250,6 +1250,7 @@ export default {
     this.$vuetify.theme.dark = true
     this.timecop_url = window.location.protocol + '//' + window.location.hostname + '/'
     this.ts_list()
+    this.selected_ready=true
 
   },
   
