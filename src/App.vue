@@ -1045,7 +1045,9 @@ export default {
         var datos_a_enviar = {}
         datos_a_enviar['collection_ts'] = "ts"
         datos_a_enviar['collection_timecop'] = "timecop"
-        datos_a_enviar['url'] = this.mongodb_url
+        if (this.mongodb_url != '') {
+          datos_a_enviar['url'] = this.mongodb_url
+        }
         datos_a_enviar['database'] = 'ts'
         datos_a_enviar['name'] = this.ts_grah_name
         console.log ('datos a enviar' + datos_a_enviar)
